@@ -174,20 +174,7 @@
   </select>
   <button class="audio-play-btn" id="audio-play-btn" onclick="handlePlay()">▶ Ouvir</button>
   <span class="audio-status" id="audio-status">Pronto</span>
-  <button class="audio-key-btn" onclick="openKeyModal()">🔑 API Key</button>
   <audio id="audio-player" class="audio-player-el"></audio>
-</div>
-
-<div class="audio-modal" id="api-modal">
-  <div class="audio-modal-box">
-    <h3>ElevenLabs API Key</h3>
-    <p>A sua chave é usada apenas nesta sessão e nunca é guardada. Feche e reabra o ficheiro para a remover.</p>
-    <input type="password" id="api-key-input" placeholder="sk_..." autocomplete="off">
-    <div class="audio-modal-btns">
-      <button class="audio-modal-cancel" onclick="closeKeyModal()">Cancelar</button>
-      <button class="audio-modal-save" onclick="saveKey()">Guardar</button>
-    </div>
-  </div>
 </div>
 
 <nav class="top-nav">
@@ -887,11 +874,9 @@ function toggleGloss(id) {
 }
 
 /* ── AUDIO ── */
-const VOICE_ID = 'iLelOQ6m5mpSeNH8fRob';
-const MODEL_ID = 'eleven_multilingual_v2';
-let apiKey = null;
+const BASE_URL = 'https://idacho57.github.io/Livro-II-O-rRegresso-a-Portugal/audio/';
+const titles = {1:'A Chegada',2:'O Café da Aldeia',3:'As Rochas e o Castelo',4:'A Vizinha e a Sopa',5:'A Estrada para Mértola',6:'Mértola',7:'A Casa de Dona Lurdes',8:'O Olival',9:'A Aldeia Acima do Rio',10:'O Mercado de Folgosa',11:'A Adega',12:'A Caminhada',13:'Cachopo',14:'A Serra e o Yoga',15:'A Festa da Aldeia',16:'A Partida'};
 let isPlaying = false;
-let currentObjectURL = null;
 
 const chapterTexts = {
   1: `Anna chega a Lisboa de manhã cedo. O avião aterra às sete e ela está cansada, mas contente. Não vai ficar em Lisboa. Lisboa é para outra vez. Desta vez, ela tem um carro alugado e um mapa com um círculo a lápis à volta de um nome: Monsanto.
@@ -1277,25 +1262,6 @@ O avião parte às catorze horas. Anna adormece antes de descolar. Sonha com ped
 Caderno de Anna. Aeroporto de Faro, segunda-feira de manhã. Estou no aeroporto. A mochila está pesada de coisas boas. Não trouxe souvenirs de lojas. Trouxe coisas de pessoas. Adelino disse que trago vida à aldeia. Eu acho que é o contrário. A aldeia trouxe vida a mim. Vou voltar. Não sei quando. Mas Portugal é sempre uma resposta, nunca uma pergunta.`
 };
 
-function openKeyModal() {
-  document.getElementById('api-modal').classList.add('open');
-  document.getElementById('api-key-input').focus();
-}
-
-function closeKeyModal() {
-  document.getElementById('api-modal').classList.remove('open');
-  document.getElementById('api-key-input').value = '';
-}
-
-function saveKey() {
-  const val = document.getElementById('api-key-input').value.trim();
-  if (val) {
-    apiKey = val;
-    setStatus('Chave guardada. Pronto.');
-  }
-  closeKeyModal();
-}
-
 function setStatus(msg) {
   document.getElementById('audio-status').textContent = msg;
 }
@@ -1309,7 +1275,7 @@ function setPlaying(state) {
 async function handlePlay() {
   const player = document.getElementById('audio-player');
 
-  // If audio is loaded and paused, resume it
+  // Resume if paused
   if (!isPlaying && player.src && player.paused && player.readyState >= 2) {
     await player.play();
     setPlaying(true);
@@ -1317,7 +1283,7 @@ async function handlePlay() {
     return;
   }
 
-  // If currently playing, pause (don't destroy the audio)
+  // Pause if playing
   if (isPlaying) {
     player.pause();
     setPlaying(false);
@@ -1326,78 +1292,43 @@ async function handlePlay() {
     return;
   }
 
-  if (!apiKey) {
-    openKeyModal();
-    setStatus('Introduza a API key primeiro.');
-    return;
-  }
-
   const chapNum = parseInt(document.getElementById('audio-chap-select').value);
-  const text = chapterTexts[chapNum];
-  if (!text) { setStatus('Texto não encontrado.'); return; }
+  const padded = String(chapNum).padStart(2, '0');
+  const url = BASE_URL + 'cap' + padded + '.mp3';
 
   const btn = document.getElementById('audio-play-btn');
   btn.disabled = true;
-  setStatus('A gerar áudio…');
+  setStatus('A carregar…');
 
-  try {
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
-      method: 'POST',
-      headers: {
-        'xi-api-key': apiKey,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        text: text,
-        model_id: MODEL_ID,
-        voice_settings: { stability: 0.5, similarity_boost: 0.75 }
-      })
-    });
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      const msg = err?.detail?.message || err?.detail || response.statusText;
-      setStatus('Erro: ' + msg);
-      btn.disabled = false;
-      return;
-    }
-
-    const blob = await response.blob();
-    if (currentObjectURL) URL.revokeObjectURL(currentObjectURL);
-    currentObjectURL = URL.createObjectURL(blob);
-    player.src = currentObjectURL;
-
-    player.onended = () => { setPlaying(false); setStatus('Fim do capítulo.'); document.getElementById('audio-play-btn').textContent = '▶ Ouvir'; };
-    player.onerror = () => { setPlaying(false); setStatus('Erro ao reproduzir.'); };
-
-    await player.play();
-    setPlaying(true);
-    const titles = {1:'A Chegada',2:'O Café da Aldeia',3:'As Rochas e o Castelo',4:'A Vizinha e a Sopa',5:'A Estrada para Mértola',6:'Mértola',7:'A Casa de Dona Lurdes',8:'O Olival',9:'A Aldeia Acima do Rio',10:'O Mercado de Folgosa',11:'A Adega',12:'A Caminhada',13:'Cachopo',14:'A Serra e o Yoga',15:'A Festa da Aldeia',16:'A Partida'};
-    setStatus('A ouvir — Cap. ' + chapNum + ': ' + titles[chapNum]);
-
-  } catch (e) {
-    setStatus('Erro: ' + e.message);
-  } finally {
+  player.src = url;
+  player.onended = () => {
+    setPlaying(false);
+    setStatus('Fim do capítulo.');
+    document.getElementById('audio-play-btn').textContent = '▶ Ouvir';
+  };
+  player.onerror = () => {
+    setPlaying(false);
+    setStatus('Ficheiro não encontrado — cap' + padded + '.mp3');
     btn.disabled = false;
-  }
+  };
+  player.oncanplay = async () => {
+    try {
+      await player.play();
+      setPlaying(true);
+      setStatus('A ouvir — Cap. ' + chapNum + ': ' + titles[chapNum]);
+    } catch(e) {
+      setStatus('Erro ao reproduzir: ' + e.message);
+    } finally {
+      btn.disabled = false;
+    }
+  };
 }
-
-// Close modal on backdrop click
-document.getElementById('api-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeKeyModal();
-});
-
-// Enter key in API input
-document.getElementById('api-key-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') saveKey();
-});
 
 // Clear audio when chapter changes
 document.getElementById('audio-chap-select').addEventListener('change', function() {
   const player = document.getElementById('audio-player');
   player.pause();
   player.src = '';
-  if (currentObjectURL) { URL.revokeObjectURL(currentObjectURL); currentObjectURL = null; }
   setPlaying(false);
   setStatus('Pronto');
   document.getElementById('audio-play-btn').textContent = '▶ Ouvir';
