@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uma Viagem a Portugal — Livro II</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8; --warm-white: #faf7f2; --ink: #1a1510; --terracotta: #c4622d;
+    --tile-blue: #2c5f7a; --gold: #8a6800; --mid: #6b5e4e; --light-mid: #a09080;
+    --border: #d4c8b8; --grammar-bg: #fdf6e3; --grammar-border: #d4a843;
+    --grammar-text: #5a3e00; --green: #3a6b3a; --green-light: #f0f7f0; --green-border: #7ab87a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--cream); color: var(--ink); font-family: 'Source Serif 4', Georgia, serif; font-size: 18px; line-height: 1.85; min-height: 100vh; }
+
+  /* HEADER */
+  .header { background: var(--tile-blue); padding: 48px 24px 36px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 1px,transparent 1px 22px),repeating-linear-gradient(-45deg,rgba(255,255,255,.03) 0 1px,transparent 1px 22px); }
+  .header-label { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 10px; position: relative; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(26px,5vw,48px); font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 8px; position: relative; }
+  .header h1 em { font-style: italic; color: #f0c070; }
+  .header-sub { color: rgba(255,255,255,.7); font-size: 15px; font-style: italic; margin-top: 10px; position: relative; }
+  .level-badge { display: inline-block; background: var(--terracotta); color: white; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 14px; border-radius: 2px; margin-top: 16px; position: relative; }
+
+  /* NAV */
+  .top-nav { background: var(--warm-white); border-bottom: 2px solid var(--border); display: flex; justify-content: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  .top-tab { padding: 14px 32px; font-family: 'Source Serif 4', serif; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border: none; background: none; color: var(--light-mid); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; }
+  .top-tab:hover { color: var(--tile-blue); }
+  .top-tab.active { color: var(--tile-blue); border-bottom-color: var(--terracotta); font-weight: 600; }
+  .chap-nav { background: var(--cream); border-bottom: 1px solid var(--border); display: none; justify-content: center; flex-wrap: wrap; gap: 4px; padding: 10px 16px; position: sticky; top: 52px; z-index: 19; }
+  .chap-nav.visible { display: flex; }
+  .chap-btn { padding: 6px 13px; font-family: 'Source Serif 4', serif; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border: 1px solid var(--border); border-radius: 20px; background: var(--warm-white); color: var(--light-mid); transition: all .2s; }
+  .chap-btn:hover { border-color: var(--tile-blue); color: var(--tile-blue); }
+  .chap-btn.active { background: var(--tile-blue); color: white; border-color: var(--tile-blue); }
+
+  /* LAYOUT */
+  .content { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+  .main-section { display: none; }
+  .main-section.active { display: block; }
+  .chap-panel { display: none; }
+  .chap-panel.active { display: block; }
+
+  /* INTRO */
+  .intro-box { background: var(--warm-white); border-left: 4px solid var(--tile-blue); padding: 24px 28px; margin-bottom: 48px; border-radius: 0 6px 6px 0; }
+  .intro-box p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; color: var(--mid); line-height: 1.7; margin-bottom: 8px; }
+  .intro-box p:last-child { margin-bottom: 0; }
+
+  /* PARTE HEADER */
+  .parte-header { margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid var(--border); }
+  .ph-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 6px; }
+  .parte-header h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); margin-bottom: 4px; }
+  .ph-sub { font-size: 14px; color: var(--mid); font-style: italic; }
+
+  /* STORY */
+  .chapter-tag { font-family: 'Playfair Display', serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 4px; }
+  .chapter-title { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--ink); margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .story-p { margin-bottom: 20px; color: var(--ink); }
+  .dialogue { font-style: italic; color: var(--mid); margin-bottom: 16px; padding-left: 16px; border-left: 2px solid var(--border); }
+
+  /* INLINE GLOSS */
+  .gloss { border-bottom: 2px dotted var(--tile-blue); color: var(--tile-blue); cursor: default; position: relative; display: inline; }
+  .gloss-box { display: none; background: var(--warm-white); border-left: 3px solid var(--tile-blue); border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 8px 0 16px 0; font-size: 15px; color: var(--mid); line-height: 1.65; font-style: italic; }
+  .gloss-box .gloss-icon { font-style: normal; margin-right: 6px; }
+  .gloss-box.open { display: block; }
+
+  /* CADERNO — Book I style */
+  .caderno { background: white; border: 1px solid var(--grammar-border); border-radius: 6px; padding: 24px 28px; margin: 32px 0; position: relative; }
+  .caderno::before { content: '🗝'; position: absolute; top: -14px; left: 18px; background: white; padding: 0 6px; font-size: 18px; }
+  .caderno-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: block; font-weight: 600; }
+  .caderno p { font-style: italic; color: var(--mid); font-size: 16px; line-height: 1.9; margin-bottom: 12px; }
+  .caderno p:last-child { margin-bottom: 0; }
+
+  /* FRASES ÚTEIS */
+  .frases { background: var(--green-light); border: 1px solid var(--green-border); border-radius: 6px; padding: 20px 24px; margin: 28px 0; }
+  .frases-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); margin-bottom: 16px; display: block; font-weight: 600; }
+  .frases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; }
+  .frase-pt { color: var(--tile-blue); font-weight: 600; font-size: 15px; padding: 5px 0; }
+  .frase-en { color: var(--mid); font-style: italic; font-size: 14px; padding: 5px 0; display: flex; align-items: center; }
+
+  /* CLOSING */
+  .closing-box { background: var(--warm-white); border: 2px solid var(--terracotta); border-radius: 6px; padding: 32px 36px; margin: 40px 0; text-align: center; }
+  .closing-label { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 16px; display: block; }
+  .closing-box p { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--ink); line-height: 1.6; margin-bottom: 12px; }
+  .closing-sub { font-size: 15px !important; font-family: 'Source Serif 4',serif !important; color: var(--mid) !important; font-style: italic; margin-bottom: 0 !important; }
+
+  /* VOCAB + GRAMMAR shared */
+  .section-label { font-family: 'Playfair Display', serif; color: var(--terracotta); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; margin: 28px 0 14px; }
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 10px; margin-bottom: 8px; }
+  .vocab-item { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .vocab-pt { font-weight: 600; color: var(--tile-blue); font-size: 15px; }
+  .vocab-en { color: var(--mid); font-size: 13px; font-style: italic; text-align: right; }
+  .chap-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+  .ch-num { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 4px; }
+  .chap-header h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--ink); }
+
+  /* GRAMMAR */
+  .grammar-card { background: var(--grammar-bg); border: 1px solid var(--grammar-border); border-radius: 6px; padding: 24px 28px; margin-bottom: 28px; }
+  .grammar-card h4 { font-family: 'Playfair Display', serif; font-size: 19px; color: var(--grammar-text); margin-bottom: 8px; }
+  .g-structure { display: inline-block; background: white; border: 1px solid var(--grammar-border); border-radius: 3px; font-family: monospace; font-size: 13px; font-weight: 600; color: var(--grammar-text); padding: 4px 12px; margin-bottom: 18px; }
+  .g-block { margin-bottom: 16px; }
+  .g-block:last-child { margin-bottom: 0; }
+  .g-block-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--light-mid); margin-bottom: 8px; }
+  .g-block p { font-size: 15px; color: var(--ink); line-height: 1.7; margin-bottom: 6px; }
+  .g-example { background: white; border-left: 3px solid var(--grammar-border); padding: 8px 14px; border-radius: 0 3px 3px 0; font-size: 14px; margin: 6px 0; line-height: 1.6; }
+  .g-example .pt { color: var(--tile-blue); font-weight: 600; display: block; margin-bottom: 2px; }
+  .g-example .en { color: var(--mid); font-style: italic; font-size: 13px; display: block; }
+
+  @media (max-width:600px) {
+    .top-tab { padding: 10px 16px; font-size: 12px; }
+    .vocab-grid { grid-template-columns: 1fr; }
+    .chap-btn { padding: 5px 9px; font-size: 10px; }
+    .grammar-card { padding: 18px 16px; }
+    .frases-grid { grid-template-columns: 1fr; }
+    .frase-en { padding-top: 0; padding-bottom: 10px; }
+  }
+
+  /* AUDIO PLAYER */
+  .audio-bar { background: var(--ink); padding: 14px 24px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .audio-bar select { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-family: 'Source Serif 4', serif; font-size: 13px; padding: 6px 10px; border-radius: 3px; cursor: pointer; max-width: 220px; }
+  .audio-bar select option { background: var(--ink); color: white; }
+  .audio-play-btn { background: var(--terracotta); border: none; color: white; font-family: 'Source Serif 4', serif; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 20px; border-radius: 3px; cursor: pointer; transition: background .2s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .audio-play-btn:hover { background: #a3521f; }
+  .audio-play-btn:disabled { background: var(--light-mid); cursor: not-allowed; }
+  .audio-status { color: rgba(255,255,255,0.6); font-size: 13px; font-style: italic; min-width: 140px; }
+  .audio-player-el { display: none; }
+  .audio-key-btn { background: none; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.5); font-size: 11px; font-family: 'Source Serif 4', serif; letter-spacing: 1px; text-transform: uppercase; padding: 6px 12px; border-radius: 3px; cursor: pointer; transition: all .2s; }
+  .audio-key-btn:hover { border-color: rgba(255,255,255,0.6); color: rgba(255,255,255,0.8); }
+  .audio-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; }
+  .audio-modal.open { display: flex; }
+  .audio-modal-box { background: var(--warm-white); border-radius: 6px; padding: 32px 36px; max-width: 480px; width: 90%; }
+  .audio-modal-box h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--ink); margin-bottom: 8px; }
+  .audio-modal-box p { font-size: 14px; color: var(--mid); margin-bottom: 16px; line-height: 1.6; }
+  .audio-modal-box input { width: 100%; border: 1px solid var(--border); border-radius: 3px; padding: 10px 14px; font-family: 'Source Serif 4', serif; font-size: 15px; color: var(--ink); outline: none; margin-bottom: 16px; }
+  .audio-modal-box input:focus { border-color: var(--tile-blue); }
+  .audio-modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+  .audio-modal-cancel { background: none; border: 1px solid var(--border); color: var(--mid); font-family: 'Source Serif 4', serif; font-size: 14px; padding: 8px 18px; border-radius: 3px; cursor: pointer; }
+  .audio-modal-save { background: var(--tile-blue); border: none; color: white; font-family: 'Source Serif 4', serif; font-size: 14px; padding: 8px 18px; border-radius: 3px; cursor: pointer; }
+  @media (max-width:600px) {
+    .audio-bar { gap: 10px; padding: 12px 16px; }
+    .audio-bar select { max-width: 160px; font-size: 12px; }
+    .audio-status { min-width: 0; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Uma Viagem a Portugal</div>
+  <h1>A História de Anna — <em>Livro II</em></h1>
+  <div class="header-sub">Seis visitas. Lugares pequenos. Silêncio a sério.</div>
+  <div class="level-badge">Nível A2</div>
+</div>
+
+<div class="audio-bar">
+  <select id="audio-chap-select">
+    <option value="1">Cap. 1 — A Chegada</option>
+    <option value="2">Cap. 2 — O Café da Aldeia</option>
+    <option value="3">Cap. 3 — As Rochas e o Castelo</option>
+    <option value="4">Cap. 4 — A Vizinha e a Sopa</option>
+    <option value="5">Cap. 5 — A Estrada para Mértola</option>
+    <option value="6">Cap. 6 — Mértola</option>
+    <option value="7">Cap. 7 — A Casa de Dona Lurdes</option>
+    <option value="8">Cap. 8 — O Olival</option>
+    <option value="9">Cap. 9 — A Aldeia Acima do Rio</option>
+    <option value="10">Cap. 10 — O Mercado de Folgosa</option>
+    <option value="11">Cap. 11 — A Adega</option>
+    <option value="12">Cap. 12 — A Caminhada</option>
+    <option value="13">Cap. 13 — Cachopo</option>
+    <option value="14">Cap. 14 — A Serra e o Yoga</option>
+    <option value="15">Cap. 15 — A Festa da Aldeia</option>
+    <option value="16">Cap. 16 — A Partida</option>
+  </select>
+  <button class="audio-play-btn" id="audio-play-btn" onclick="handlePlay()">▶ Ouvir</button>
+  <span class="audio-status" id="audio-status">Pronto</span>
+  <audio id="audio-player" class="audio-player-el"></audio>
+</div>
+
+<nav class="top-nav">
+  <button class="top-tab active" onclick="showMain('historia',this)">História</button>
+  <button class="top-tab" onclick="showMain('vocabulario',this)">Vocabulário</button>
+  <button class="top-tab" onclick="showMain('gramatica',this)">Gramática</button>
+</nav>
+
+<div id="nav-historia" class="chap-nav visible">
+  <button class="chap-btn active" onclick="showChap('h',0,this)">Início</button>
+  <button class="chap-btn" onclick="showChap('h',1,this)">Cap. 1</button>
+  <button class="chap-btn" onclick="showChap('h',2,this)">Cap. 2</button>
+  <button class="chap-btn" onclick="showChap('h',3,this)">Cap. 3</button>
+  <button class="chap-btn" onclick="showChap('h',4,this)">Cap. 4</button>
+  <button class="chap-btn" onclick="showChap('h',5,this)">Cap. 5</button>
+  <button class="chap-btn" onclick="showChap('h',6,this)">Cap. 6</button>
+  <button class="chap-btn" onclick="showChap('h',7,this)">Cap. 7</button>
+  <button class="chap-btn" onclick="showChap('h',8,this)">Cap. 8</button>
+  <button class="chap-btn" onclick="showChap('h',9,this)">Cap. 9</button>
+  <button class="chap-btn" onclick="showChap('h',10,this)">Cap. 10</button>
+  <button class="chap-btn" onclick="showChap('h',11,this)">Cap. 11</button>
+  <button class="chap-btn" onclick="showChap('h',12,this)">Cap. 12</button>
+  <button class="chap-btn" onclick="showChap('h',13,this)">Cap. 13</button>
+  <button class="chap-btn" onclick="showChap('h',14,this)">Cap. 14</button>
+  <button class="chap-btn" onclick="showChap('h',15,this)">Cap. 15</button>
+  <button class="chap-btn" onclick="showChap('h',16,this)">Cap. 16</button>
+</div>
+<div id="nav-vocabulario" class="chap-nav">
+  <button class="chap-btn active" onclick="showChap('v',1,this)">Cap. 1</button>
+  <button class="chap-btn" onclick="showChap('v',2,this)">Cap. 2</button>
+  <button class="chap-btn" onclick="showChap('v',3,this)">Cap. 3</button>
+  <button class="chap-btn" onclick="showChap('v',4,this)">Cap. 4</button>
+  <button class="chap-btn" onclick="showChap('v',5,this)">Cap. 5</button>
+  <button class="chap-btn" onclick="showChap('v',6,this)">Cap. 6</button>
+  <button class="chap-btn" onclick="showChap('v',7,this)">Cap. 7</button>
+  <button class="chap-btn" onclick="showChap('v',8,this)">Cap. 8</button>
+  <button class="chap-btn" onclick="showChap('v',9,this)">Cap. 9</button>
+  <button class="chap-btn" onclick="showChap('v',10,this)">Cap. 10</button>
+  <button class="chap-btn" onclick="showChap('v',11,this)">Cap. 11</button>
+  <button class="chap-btn" onclick="showChap('v',12,this)">Cap. 12</button>
+  <button class="chap-btn" onclick="showChap('v',13,this)">Cap. 13</button>
+  <button class="chap-btn" onclick="showChap('v',14,this)">Cap. 14</button>
+  <button class="chap-btn" onclick="showChap('v',15,this)">Cap. 15</button>
+  <button class="chap-btn" onclick="showChap('v',16,this)">Cap. 16</button>
+</div>
+<div id="nav-gramatica" class="chap-nav">
+  <button class="chap-btn active" onclick="showChap('g',1,this)">Cap. 1</button>
+  <button class="chap-btn" onclick="showChap('g',2,this)">Cap. 2</button>
+  <button class="chap-btn" onclick="showChap('g',3,this)">Cap. 3</button>
+  <button class="chap-btn" onclick="showChap('g',4,this)">Cap. 4</button>
+  <button class="chap-btn" onclick="showChap('g',5,this)">Cap. 5</button>
+  <button class="chap-btn" onclick="showChap('g',6,this)">Cap. 6</button>
+  <button class="chap-btn" onclick="showChap('g',7,this)">Cap. 7</button>
+  <button class="chap-btn" onclick="showChap('g',8,this)">Cap. 8</button>
+  <button class="chap-btn" onclick="showChap('g',9,this)">Cap. 9</button>
+  <button class="chap-btn" onclick="showChap('g',10,this)">Cap. 10</button>
+  <button class="chap-btn" onclick="showChap('g',11,this)">Cap. 11</button>
+  <button class="chap-btn" onclick="showChap('g',12,this)">Cap. 12</button>
+  <button class="chap-btn" onclick="showChap('g',13,this)">Cap. 13</button>
+  <button class="chap-btn" onclick="showChap('g',14,this)">Cap. 14</button>
+  <button class="chap-btn" onclick="showChap('g',15,this)">Cap. 15</button>
+  <button class="chap-btn" onclick="showChap('g',16,this)">Cap. 16</button>
+</div>
+
+<div class="content">
+
+<!-- ==================== HISTÓRIA ==================== -->
+<div id="main-historia" class="main-section active">
+
+<div id="h-0" class="chap-panel active">
+  <div class="intro-box"><p>Esta é a sexta visita de Anna a Portugal.</p><p>Desta vez, ela não vai às cidades grandes.</p><p>Ela vai devagar. Ela vai para os lugares pequenos.</p></div>
+  <div class="parte-header"><div class="ph-label">Sobre este livro</div><h2 style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:4px;">Uma Viagem a Portugal — Livro II</h2><div class="ph-sub">Continuação de Livro I &bull; Nível A2 &bull; Português Europeu</div></div>
+  <p class="story-p">Anna é americana. Escreve. Já esteve em Portugal cinco vezes. Desta vez, não vai a museus grandes nem a restaurantes com estrelas. Vai a aldeias pequenas, a mercados locais, a casas de pessoas que não a conhecem mas que a convidam para entrar.</p>
+  <div class="section-label">As Quatro Partes</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><span class="vocab-pt">Parte 1 — Monsanto</span><span class="vocab-en">Cap. 1–4</span></div>
+    <div class="vocab-item"><span class="vocab-pt">Parte 2 — Alentejo Interior</span><span class="vocab-en">Cap. 5–8</span></div>
+    <div class="vocab-item"><span class="vocab-pt">Parte 3 — Douro Interior</span><span class="vocab-en">Cap. 9–12</span></div>
+    <div class="vocab-item"><span class="vocab-pt">Parte 4 — Algarve Interior</span><span class="vocab-en">Cap. 13–16</span></div>
+  </div>
+</div>
+
+<!-- CAP 1 -->
+<div id="h-1" class="chap-panel">
+  <div class="parte-header"><div class="ph-label">Parte 1 — Monsanto</div><div class="ph-sub">Uma aldeia de pedra no centro de Portugal. As casas são antigas e estão entre rochas enormes. Há muito silêncio aqui.</div></div>
+  <div class="chapter-tag">Capítulo 1</div><h2 class="chapter-title">A Chegada</h2>
+  <p class="story-p">Anna chega a Lisboa de manhã cedo. O avião aterra às sete e ela está cansada, mas contente. Não vai ficar em Lisboa. Lisboa é para outra vez. Desta vez, ela tem um carro alugado e um mapa com um círculo a lápis à volta de um nome: <strong>Monsanto</strong>.</p>
+  <p class="story-p">No aeroporto, ela bebe um café ao balcão. O café é forte e pequeno. Ela gosta assim. A senhora que serve não fala inglês e Anna não precisa. Ela diz <em>obrigada</em> e a senhora diz <em>bom proveito</em> e isso chega.</p>
+  <p class="story-p">Antes de sair, Anna vê Miguel. Ele está do outro lado do café, com uma câmara ao ombro e um copo de água na mão. Ele vê-a também. Os dois acenam. Ele sorri um pouco. Ela também. Depois cada um vai para o seu lado. Não há mais nada a dizer. Está bem assim.</p>
+  <p class="story-p">Anna pega na mochila e sai para o <span class="gloss" onclick="toggleGloss('g-parque')">parque de estacionamento</span>. O carro é pequeno e cinzento. Ela coloca a mochila no banco de trás, liga o GPS, e sai de Lisboa.</p>
+  <div id="g-parque" class="gloss-box"><span class="gloss-icon">💬</span><em>parque de estacionamento</em> — car park. In Portugal, parking areas are always called this, never <em>estacionamento</em> alone. You'll see the signs at every town entrance.</div>
+  <p class="story-p">A estrada é longa. Passa por campos de trigo, oliveiras, e aldeias com nomes que ela não conhece. O rádio toca músicas portuguesas. Anna não percebe todas as palavras mas gosta do som. Há uma hora em que não vê nenhum carro. Só estrada, sol, e pedras.</p>
+  <p class="story-p">Monsanto aparece de repente. Não é uma aldeia normal. As casas crescem entre rochas enormes, como se a pedra e as paredes fossem a mesma coisa. Anna para o carro e fica a olhar.</p>
+  <p class="dialogue">— <em>Que sítio estranho e bonito.</em> — diz ela, em voz baixa, para ninguém.</p>
+  <p class="story-p">Encontra a casa que alugou online. A chave está debaixo de um vaso com uma planta seca. A porta é baixa e Anna tem de se curvar para entrar. Dentro, há uma cama, uma mesa, uma janela pequena com vista para as rochas. Não há televisão. Há silêncio.</p>
+  <p class="story-p">Ela coloca as coisas, deita-se na cama por cinco minutos, e adormece durante duas horas.</p>
+</div>
+
+<!-- CAP 2 -->
+<div id="h-2" class="chap-panel">
+  <div class="chapter-tag">Capítulo 2</div><h2 class="chapter-title">O Café da Aldeia</h2>
+  <p class="story-p">De manhã, Anna acorda com o som de uma galinha. Não um galo — uma galinha. Ela ri um pouco porque é um som muito inesperado.</p>
+  <p class="story-p">Veste-se e sai. A aldeia está quieta. As ruas são estreitas e feitas de <span class="gloss" onclick="toggleGloss('g-calcetadas')">pedra irregular</span>. Não há carros aqui dentro. Não cabem. Anna anda devagar e olha para tudo: uma porta azul com tinta a descascar, uma gata preta a dormir numa rocha quente, uma janela com flores de plástico cor-de-rosa.</p>
+  <div id="g-calcetadas" class="gloss-box"><span class="gloss-icon">💬</span>The streets of old Portuguese villages are paved with <em>calçada portuguesa</em> — irregular stone cobbles set by hand. They are beautiful and genuinely slippery when wet. Locals walk them without thinking; visitors slow down.</div>
+  <p class="story-p">O único café da aldeia chama-se <em>Café Central</em> mas é muito pequeno para esse nome. Tem quatro mesas, um balcão de madeira, e um senhor de bigode que se chama Armindo. Anna sabe o nome dele porque está escrito num papel colado à máquina de café.</p>
+  <p class="dialogue">— <em>Bom dia. Um café, por favor.</em> — diz Anna.</p>
+  <p class="dialogue">— <em>Simples ou cheio?</em> — pergunta Armindo.</p>
+  <p class="story-p">Anna não sabe a diferença.</p>
+  <p class="dialogue">— <em>Qual é a diferença?</em></p>
+  <p class="dialogue">— <em>Simples é só café. Cheio é café com um pouco de água quente.</em> — Ele faz um gesto com a mão. — <em>Mais suave.</em></p>
+  <p class="dialogue">— <em>Cheio, então.</em> — diz Anna.</p>
+  <p class="story-p">O café chega numa <span class="gloss" onclick="toggleGloss('g-chavena')">chávena</span> branca com um pacote de açúcar em cima. Anna não usa o açúcar mas gosta que ele esteja lá. Ela senta-se perto da janela. Há uma vista para as rochas e para um pedaço de campo verde ao longe.</p>
+  <div id="g-chavena" class="gloss-box"><span class="gloss-icon">💬</span><em>chávena</em> — the Portuguese word for cup, specifically a coffee or tea cup. Used everywhere in Portugal for the small cups that coffee is served in. Always at the balcão (counter), never to go.</div>
+  <p class="story-p">Armindo limpa o balcão com um pano e pergunta sem olhar para ela:</p>
+  <p class="dialogue">— <em>É americana?</em></p>
+  <p class="dialogue">— <em>Sou. Como sabe?</em></p>
+  <p class="dialogue">— <em>A mochila.</em> — Ele aponta. — <em>Os americanos têm sempre mochilas grandes.</em></p>
+  <p class="dialogue">— <em>É verdade.</em> — diz Anna.</p>
+  <p class="dialogue">— <em>Fica muito tempo?</em></p>
+  <p class="dialogue">— <em>Quatro dias.</em> — diz Anna. — <em>Quero ver a aldeia. Andar. Descansar.</em></p>
+  <p class="story-p">Armindo acena com a cabeça como se isso fosse a coisa mais sensata que já ouviu.</p>
+  <p class="dialogue">— <em>Então está no sítio certo.</em> — diz ele. — <em>Aqui não há nada para fazer. É perfeito.</em></p>
+  <p class="story-p">Anna bebe o café e pensa que ele tem razão.</p>
+
+  <div class="frases">
+    <span class="frases-label">☕ No Café — Frases Úteis</span>
+    <div class="frases-grid">
+      <span class="frase-pt">Um café, por favor.</span><span class="frase-en">A coffee, please.</span>
+      <span class="frase-pt">Um café cheio, por favor.</span><span class="frase-en">A milder espresso, please.</span>
+      <span class="frase-pt">Qual é a diferença?</span><span class="frase-en">What's the difference?</span>
+      <span class="frase-pt">Tem pastel de nata?</span><span class="frase-en">Do you have pastel de nata?</span>
+      <span class="frase-pt">Quanto é?</span><span class="frase-en">How much is it?</span>
+      <span class="frase-pt">Pode trazer a conta?</span><span class="frase-en">Can you bring the bill?</span>
+    </div>
+  </div>
+</div>
+
+<!-- CAP 3 -->
+<div id="h-3" class="chap-panel">
+  <div class="chapter-tag">Capítulo 3</div><h2 class="chapter-title">As Rochas e o Castelo</h2>
+  <p class="story-p">Depois do café, Anna sobe para o castelo. Não é uma subida fácil. As pedras da rua são redondas e escorregadias e Anna tem de andar com cuidado. Mas não se importa. Gosta de sentir os músculos das pernas a trabalhar.</p>
+  <p class="story-p">O castelo está no topo da aldeia. Não tem telhado. Só paredes altas de pedra escura. Mas a vista é extraordinária. Anna pode ver quilómetros de campo: verde, castanho, amarelo. Não há nenhuma cidade. Não há nenhum edifício alto. Só terra e céu.</p>
+  <p class="story-p">Ela senta-se numa pedra e tira o caderno da mochila. Não escreve logo. Primeiro só olha. Há um falcão a voar muito alto, a fazer círculos. O vento é suave mas frio.</p>
+  <p class="story-p">Depois de um tempo, uma mulher sobe também. Tem talvez setenta anos, um casaco preto, e um saco de plástico na mão. Ela não parece uma turista. Ela senta-se noutra pedra e começa a tricotar.</p>
+  <p class="story-p">Anna observa sem querer ser indelicada. A mulher tricota muito rápido, com lã vermelha, e não olha para os dedos. Olha para o campo.</p>
+  <p class="dialogue">— <em>Já veio aqui antes?</em></p>
+  <p class="dialogue">— <em>Não. É a primeira vez em Monsanto.</em> — diz Anna.</p>
+  <p class="dialogue">— <em>E gosta?</em></p>
+  <p class="dialogue">— <em>Muito. É muito especial.</em></p>
+  <p class="dialogue">— <em>Eu nasci aqui. Nunca saí.</em></p>
+  <p class="story-p">Anna não sabe o que dizer. Então pergunta:</p>
+  <p class="dialogue">— <em>E gosta de viver aqui?</em></p>
+  <p class="dialogue">— <em>É a minha vida. Não sei outra.</em></p>
+  <p class="story-p">Ficam as duas em silêncio. O falcão desaparece. A mulher continua a tricotar. Anna abre o caderno mas não escreve nada. Às vezes o silêncio é suficiente.</p>
+  <p class="story-p">Na descida, Anna encontra uma placa pequena numa parede: <em>Monsanto — Aldeia mais Portuguesa de Portugal — 1938.</em> Ela fotografia a placa com o <span class="gloss" onclick="toggleGloss('g-telemovel')">telemóvel</span>. Depois fotografa uma rocha. Depois uma porta verde. Depois para de fotografar e só anda.</p>
+  <div id="g-telemovel" class="gloss-box"><span class="gloss-icon">💬</span><em>telemóvel</em> — mobile phone. This is the standard word in Portugal. The word comes from <em>tele-</em> (distance) + <em>móvel</em> (mobile). You'll see it on shop signs and hear it constantly.</div>
+</div>
+
+<!-- CAP 4 -->
+<div id="h-4" class="chap-panel">
+  <div class="chapter-tag">Capítulo 4</div><h2 class="chapter-title">A Vizinha e a Sopa</h2>
+  <p class="story-p">Na última tarde em Monsanto, Anna está a arrumar a mochila quando ouve uma batida na porta. É uma mulher de meia-idade com um prato tapado com um pano.</p>
+  <p class="dialogue">— <em>Sou a Conceição. Moro ao lado.</em> — diz ela. — <em>Trouxe sopa.</em></p>
+  <p class="dialogue">— <em>Para mim?</em></p>
+  <p class="dialogue">— <em>O Armindo disse que está sozinha. Faço sempre sopa às quintas.</em> — Ela estende o prato. — <em>É <span class="gloss" onclick="toggleGloss('g-caldoverde')">caldo verde</span>.</em></p>
+  <div id="g-caldoverde" class="gloss-box"><span class="gloss-icon">💬</span><em>caldo verde</em> — literally "green broth." Portugal's most beloved soup: potato-based with very thinly sliced <em>couve-galega</em> (Portuguese kale), olive oil, and a round of <em>chouriço</em> on top. Every region has its version; every family has its opinion on the correct kale.</div>
+  <p class="story-p">Anna aceita o prato.</p>
+  <p class="dialogue">— <em>Obrigada. É muito gentil.</em></p>
+  <p class="dialogue">— <em>Entre, entre.</em> — diz Conceição, mas já está a entrar ela própria.</p>
+  <p class="story-p">Sentam-se à mesa pequena. Conceição tira o pano e há uma tigela de sopa verde escura com uma rodela de <span class="gloss" onclick="toggleGloss('g-chourico')">chouriço</span> em cima. O cheiro é forte e bom.</p>
+  <div id="g-chourico" class="gloss-box"><span class="gloss-icon">💬</span><em>chouriço</em> — smoked pork sausage, seasoned with paprika and garlic. A staple of Portuguese cooking. It appears in soups, grilled on little clay dishes, or sliced over bread. Not the same as Spanish chorizo — Portuguese chouriço is smokier and less spicy.</div>
+  <p class="dialogue">— <em>Sabe fazer?</em> — pergunta Conceição.</p>
+  <p class="dialogue">— <em>Não. Nunca fiz.</em></p>
+  <p class="dialogue">— <em>É fácil.</em> — Conceição começa a explicar com as mãos. — <em>Batata, couve, azeite, alho, chouriço. Coze tudo. Depois passa a batata. Depois junta a couve cortada muito fina. Não coze muito a couve. Tem de ficar verde.</em></p>
+  <p class="story-p">Anna come e ouve. A sopa é quente e simples e muito boa.</p>
+  <p class="dialogue">— <em>A couve tem de ser <span class="gloss" onclick="toggleGloss('g-couvegalega')">couve-galega</span>.</em> — diz Conceição, com seriedade. — <em>Não é qualquer couve.</em></p>
+  <div id="g-couvegalega" class="gloss-box"><span class="gloss-icon">💬</span><em>couve-galega</em> — a variety of kale with long, dark green leaves, grown across Portugal. It is the only correct kale for caldo verde, according to most Portuguese cooks. The leaves are sliced extremely thin — almost like a chiffonade.</div>
+  <p class="dialogue">— <em>Couve-galega.</em> — repete Anna, e escreve no caderno.</p>
+  <p class="dialogue">— <em>O meu marido também escrevia.</em> — Ela diz isto de forma simples, sem tristeza na voz. — <em>Ele morreu há três anos. Escrevia poesia. Muito má.</em> — Ela ri. — <em>Mas escrevia.</em></p>
+  <p class="dialogue">— <em>A poesia má também é importante.</em> — diz Anna.</p>
+  <p class="story-p">Conceição levanta-se, pega no prato vazio, e diz:</p>
+  <p class="dialogue">— <em>Amanhã de manhã, antes de ir, venha tomar o <span class="gloss" onclick="toggleGloss('g-pequenoa')">pequeno-almoço</span> comigo. Tenho pão de centeio e queijo da serra.</em></p>
+  <div id="g-pequenoa" class="gloss-box"><span class="gloss-icon">💬</span><em>pequeno-almoço</em> — breakfast. Literally "small lunch." In Portugal, breakfast is traditionally simple: bread, butter, maybe cheese or jam, and coffee. It is eaten at home or standing at a café counter, not as a long meal.</div>
+  <p class="dialogue">— <em>Venho com certeza.</em> — diz Anna.</p>
+  <p class="story-p">Depois de Conceição sair, Anna escreve no caderno por uma hora.</p>
+
+  <div class="caderno">
+    <span class="caderno-label">Do Caderno de Anna</span>
+    <p>Hoje uma senhora chamada Conceição trouxe sopa para mim. Não me conhece. Só sabe que estou sozinha. A sopa chama-se caldo verde. É verde e quente e tem chouriço. Aprendi a receita. A couve tem de ser couve-galega — isso é muito importante, segundo a Conceição.</p>
+    <p>Amanhã vou tomar o pequeno-almoço com ela. Não quero ir embora. Mas vou voltar a este lugar um dia.</p>
+  </div>
+
+  <div class="frases">
+    <span class="frases-label">🏠 Em Casa de Alguém — Frases Úteis</span>
+    <div class="frases-grid">
+      <span class="frase-pt">Obrigada. É muito gentil.</span><span class="frase-en">Thank you. That's very kind.</span>
+      <span class="frase-pt">Está delicioso.</span><span class="frase-en">It's delicious.</span>
+      <span class="frase-pt">Como se faz?</span><span class="frase-en">How do you make it?</span>
+      <span class="frase-pt">Posso ter a receita?</span><span class="frase-en">Can I have the recipe?</span>
+      <span class="frase-pt">Não precisa de se preocupar.</span><span class="frase-en">You don't need to go to any trouble.</span>
+      <span class="frase-pt">Foi um prazer conhecê-la.</span><span class="frase-en">It was a pleasure to meet you.</span>
+    </div>
+  </div>
+</div>
+
+<!-- CAP 5 -->
+<div id="h-5" class="chap-panel">
+  <div class="parte-header"><div class="ph-label">Parte 2 — Alentejo Interior</div><div class="ph-sub">Entre Mértola e Serpa, há campos de olivas que não acabam. As aldeias são brancas. O sol é forte. O tempo passa mais devagar aqui.</div></div>
+  <div class="chapter-tag">Capítulo 5</div><h2 class="chapter-title">A Estrada para Mértola</h2>
+  <p class="story-p">Anna parte de Monsanto de manhã. Come o pequeno-almoço com Conceição: pão de centeio torrado com manteiga, queijo da serra que é forte e cremoso, e um chá de <span class="gloss" onclick="toggleGloss('g-hortela')">hortelã</span>. Conceição faz o chá com folhas frescas do jardim.</p>
+  <div id="g-hortela" class="gloss-box"><span class="gloss-icon">💬</span><em>hortelã</em> — mint. Fresh mint tea made from garden leaves is very common in rural Portugal, especially in the Alentejo. Nothing comes from a bag. The plant grows wild and abundant.</div>
+  <p class="story-p">Quando Anna sai, Conceição dá-lhe um frasco pequeno.</p>
+  <p class="dialogue">— <em>Azeite da minha irmã. Tem um olival perto de Beja.</em></p>
+  <p class="story-p">Anna não quer aceitar mas Conceição já está a fechar a porta.</p>
+  <p class="story-p">A estrada para Mértola é longa e plana. O Alentejo é assim: grande e aberto. Não há montanhas. Há céu. Anna conduz com as janelas abertas. O ar cheira a terra seca e a ervas que ela não conhece.</p>
+  <p class="story-p">Ela para numa aldeia pequena para almoçar. A aldeia tem uma praça com uma árvore no centro e um café com mesas de plástico branco lá fora. Anna senta-se e pede o que o senhor da mesa ao lado tem.</p>
+  <p class="dialogue">— <em>O que é isso?</em> — pergunta ela, a apontar.</p>
+  <p class="dialogue">— <em>Migas com carne de porco.</em> — diz o homem. Tem uns sessenta anos e um chapéu de palha.</p>
+  <p class="dialogue">— <em>É bom?</em></p>
+  <p class="dialogue">— <em>É a melhor coisa do Alentejo.</em> — ele diz, muito sério.</p>
+  <p class="story-p">Anna pede <span class="gloss" onclick="toggleGloss('g-migas')">migas</span>. Chegam numa travessa de barro: pão velho ensopado em azeite com alho e coentros, e ao lado pedaços de carne de porco frita. É pesado e rico e muito bom.</p>
+  <div id="g-migas" class="gloss-box"><span class="gloss-icon">💬</span><em>migas</em> — one of the great dishes of the Alentejo. Day-old bread soaked in olive oil, garlic, and coriander, cooked until soft and golden. Usually served alongside fried pork or bacalhau. The name comes from <em>migalha</em> (crumb) — the bread is broken, not sliced.</div>
+  <p class="story-p">O homem apresenta-se. Chama-se Rui. É agricultor. Tem oliveiras e também alguns porcos.</p>
+  <p class="dialogue">— <em>Os porcos comem a bolota. Por isso a carne é boa.</em></p>
+  <p class="dialogue">— <em>Bolota?</em> — Anna não conhece a palavra.</p>
+  <p class="story-p">Rui apanha uma coisa pequena do chão e mostra. É uma bolota de uma árvore perto.</p>
+  <p class="dialogue">— <em>Ah! Acorn. Em inglês diz-se acorn.</em></p>
+  <p class="dialogue">— <em>Acorn.</em> — repete Rui, com cuidado. — <em>Nunca soube a palavra.</em></p>
+  <p class="story-p">Os dois riem. Anna pensa que esta é a melhor parte de viajar: aprender palavras novas com estranhos em praças com árvores.</p>
+</div>
+
+<!-- CAP 6 -->
+<div id="h-6" class="chap-panel">
+  <div class="chapter-tag">Capítulo 6</div><h2 class="chapter-title">Mértola</h2>
+  <p class="story-p">Mértola é uma surpresa. A aldeia fica em cima de uma rocha, sobre o rio Guadiana. As paredes são brancas. As ruas são muito estreitas. E no centro há uma igreja que foi uma <span class="gloss" onclick="toggleGloss('g-mesquita')">mesquita</span>. Anna lê isto numa placa e pára.</p>
+  <div id="g-mesquita" class="gloss-box"><span class="gloss-icon">💬</span>Mértola's church is unique in Portugal — it was converted from a 12th-century mosque and still retains its original mihrab (prayer niche) inside. The town was a major Islamic cultural centre during the Moorish period, and archaeological evidence of that history is visible throughout.</div>
+  <p class="story-p">Entra na igreja. É simples dentro. As paredes são brancas também e há colunas antigas. Anna fica de pé no centro e olha para cima. Pensa em todas as pessoas que estiveram neste sítio antes dela: mouros, cristãos, romanos mais antigos ainda. O lugar tem muita história e ela sente isso nos pés, de alguma forma.</p>
+  <p class="story-p">Do lado de fora, há um mercado pequeno numa praça. Não é um mercado de turistas. É um mercado de aldeia, com pessoas da zona a vender o que têm: mel, queijo, ervas secas, cestos de palha, algumas roupas.</p>
+  <p class="story-p">Anna compra ervas secas numa banca de uma senhora muito velha.</p>
+  <p class="dialogue">— <em>Para quê serve isto?</em> — pergunta Anna, a segurar um molho de erva cinzenta.</p>
+  <p class="dialogue">— <em><span class="gloss" onclick="toggleGloss('g-alfazema')">Alfazema</span>. Põe-se na roupa. Ou no banho. Ou só para cheirar.</em></p>
+  <div id="g-alfazema" class="gloss-box"><span class="gloss-icon">💬</span><em>alfazema</em> — lavender. Grown wild across the south of Portugal and sold dried in bundles at every market. Used in linen drawers, baths, and as a natural fragrance. The word comes from Arabic — like many Portuguese plant names from the southern regions.</div>
+  <p class="dialogue">— <em>Cheira bem. E isto?</em></p>
+  <p class="dialogue">— <em>Tomilho. Para cozinhar. Com carne, com peixe, com tudo.</em></p>
+  <p class="dialogue">— <em>Menina, compra tudo e aprende em casa.</em></p>
+  <p class="story-p">Anna compra três molhos diferentes. A senhora embrulha-os num papel de jornal e amarra com um fio. É um gesto tão simples e tão bonito que Anna quer fotografar mas não quer ser indelicada. Então só guarda na memória.</p>
+  <p class="story-p">À tarde, ela senta-se à beira do rio. A água é castanha e lenta. Um barco velho está amarrado a uma pedra. Dois homens pescam em silêncio do outro lado. Anna tira os sapatos e deixa os pés na água. Está fria.</p>
+  <p class="story-p">Ela pensa que Portugal é sempre assim: coisas simples que são perfeitas.</p>
+
+  <div class="frases">
+    <span class="frases-label">🛒 No Mercado — Frases Úteis</span>
+    <div class="frases-grid">
+      <span class="frase-pt">Para quê serve isto?</span><span class="frase-en">What is this for?</span>
+      <span class="frase-pt">Como se chama isto?</span><span class="frase-en">What is this called?</span>
+      <span class="frase-pt">Quanto custa?</span><span class="frase-en">How much does it cost?</span>
+      <span class="frase-pt">Pode embrulhar?</span><span class="frase-en">Can you wrap it?</span>
+      <span class="frase-pt">É daqui?</span><span class="frase-en">Is it from around here?</span>
+      <span class="frase-pt">Posso provar?</span><span class="frase-en">Can I try it?</span>
+    </div>
+  </div>
+</div>
+
+<!-- CAP 7 -->
+<div id="h-7" class="chap-panel">
+  <div class="chapter-tag">Capítulo 7</div><h2 class="chapter-title">A Casa de Dona Lurdes</h2>
+  <p class="story-p">Na manhã seguinte, a dona da casa onde Anna fica — uma mulher chamada Lurdes — bate à porta do quarto às oito e diz:</p>
+  <p class="dialogue">— <em>Hoje vou fazer pão. Quer ajudar?</em></p>
+  <p class="dialogue">— <em>Quero.</em></p>
+  <p class="story-p">A cozinha de Dona Lurdes é grande e antiga. Há um <span class="gloss" onclick="toggleGloss('g-fornolinha')">forno de lenha</span> numa parede. Há ervas penduradas no teto. Há uma mesa de madeira muito grossa no centro, com farinha já espalhada.</p>
+  <div id="g-fornolinha" class="gloss-box"><span class="gloss-icon">💬</span><em>forno de lenha</em> — wood-fired oven. Still common in rural Portuguese homes and in <em>padarias</em> (bakeries). Bread baked in a wood-fired oven has a dark, thick crust and a smoky depth that a modern oven cannot replicate. The fire is lit hours before baking begins.</div>
+  <p class="dialogue">— <em>Já fez pão?</em></p>
+  <p class="dialogue">— <em>Uma vez. Não ficou muito bom.</em></p>
+  <p class="dialogue">— <em>O primeiro pão nunca fica bom. O segundo também não. O terceiro começa a ficar.</em></p>
+  <p class="story-p">Ela ensina Anna passo a passo. A farinha, o sal, o <span class="gloss" onclick="toggleGloss('g-fermento')">fermento</span>, a água morna.</p>
+  <div id="g-fermento" class="gloss-box"><span class="gloss-icon">💬</span><em>fermento</em> — yeast. In traditional bread-making, this is fresh yeast (<em>fermento fresco</em>), not dried. It must be dissolved in lukewarm water — never hot. Hot water kills it instantly, which is why Dona Lurdes warns Anna with such emphasis.</div>
+  <p class="dialogue">— <em>A água não pode estar quente. Mata o fermento.</em></p>
+  <p class="story-p">Depois amassar: com as palmas das mãos, para a frente e para trás, por vinte minutos. Anna amassa. É um trabalho físico. As mãos ficam cansadas.</p>
+  <p class="dialogue">— <em>Mais forte. O pão sente quando não acredita nele.</em></p>
+  <p class="story-p">Anna ri mas amassa mais forte. Enquanto o pão descansa, Dona Lurdes faz café e as duas sentam-se. Dona Lurdes pergunta sobre a América. Anna explica que vive em Nova Iorque mas não gosta muito da cidade.</p>
+  <p class="dialogue">— <em>É demasiado rápido. Aqui é diferente.</em></p>
+  <p class="dialogue">— <em>Aqui é devagar porque não há outra opção.</em> — diz Dona Lurdes, com humor seco.</p>
+  <p class="story-p">O pão fica no forno quarenta minutos. Quando sai, a casca é escura e o cheiro enche toda a casa. Dona Lurdes corta uma fatia e põe <span class="gloss" onclick="toggleGloss('g-azeite')">azeite</span> em cima. Dá a Anna. Anna come e não diz nada por um momento.</p>
+  <div id="g-azeite" class="gloss-box"><span class="gloss-icon">💬</span><em>azeite</em> — olive oil. In Portugal, olive oil is not a condiment — it is a foundation. It goes on bread, into soups, over fish, over vegetables. The Alentejo and Trás-os-Montes produce some of the finest olive oils in the world. A good <em>azeite</em> has a peppery finish.</div>
+  <p class="dialogue">— <em>É o melhor pão que já comi na minha vida.</em> — diz ela, e é verdade.</p>
+</div>
+
+<!-- CAP 8 -->
+<div id="h-8" class="chap-panel">
+  <div class="chapter-tag">Capítulo 8</div><h2 class="chapter-title">O Olival</h2>
+  <p class="story-p">Na última manhã no Alentejo, Dona Lurdes acorda Anna cedo.</p>
+  <p class="dialogue">— <em>A minha prima tem um <span class="gloss" onclick="toggleGloss('g-olival')">olival</span> a dez minutos. Hoje colhem. Quer vir?</em></p>
+  <div id="g-olival" class="gloss-box"><span class="gloss-icon">💬</span><em>olival</em> — olive grove. The Alentejo has millions of olive trees, many of them centuries old. The harvest (<em>colheita</em>) happens in autumn, usually October to December. It is labour-intensive and often done by the same extended family every year.</div>
+  <p class="story-p">São sete da manhã. O sol ainda está baixo. Anna veste uma camisola grossa e vai. O olival é grande. As árvores são velhas, com troncos torcidos e cinzentos. Há seis pessoas a trabalhar já: homens e mulheres, de idades diferentes. Usam pentes especiais de plástico para puxar as azeitonas dos ramos. As azeitonas caem em redes estendidas no chão.</p>
+  <p class="story-p">A prima de Dona Lurdes chama-se Filomena. É pequena e forte e trabalha mais rápido que todos. Ela dá a Anna um pente e mostra como fazer.</p>
+  <p class="dialogue">— <em>Assim. Com cuidado. Não parte os ramos.</em></p>
+  <p class="story-p">Anna começa. É mais difícil do que parece. As azeitonas estão presas. Os braços cansam depressa.</p>
+  <p class="dialogue">— <em>Você é americana? A primeira vez num olival?</em></p>
+  <p class="dialogue">— <em>Sim.</em></p>
+  <p class="dialogue">— <em>Nota-se.</em> — Filomena diz isso sem maldade. É só um facto.</p>
+  <p class="story-p">Às dez, param para comer. Sentam-se no chão com o dorso nas árvores. Há pão, queijo, azeitonas curadas, e vinho num <span class="gloss" onclick="toggleGloss('g-cantaro')">cântaro de barro</span> que passa de mão em mão. Um homem mais velho olha para as mãos de Anna.</p>
+  <div id="g-cantaro" class="gloss-box"><span class="gloss-icon">💬</span><em>cântaro de barro</em> — a clay jug, traditionally used to keep water or wine cool. The porous clay allows slight evaporation, which chills the liquid inside. Still used in rural Alentejo at outdoor meals. It is passed from person to person without glasses — a sign of trust and community.</div>
+  <p class="dialogue">— <em>Tem mãos de escritora.</em></p>
+  <p class="dialogue">— <em>Como sabe?</em></p>
+  <p class="dialogue">— <em>Não têm calos.</em> — Ele mostra as suas próprias mãos. São duras como madeira.</p>
+  <p class="story-p">À tarde, Anna ajuda a carregar os caixotes de azeitonas para um camião. Está cansada de uma maneira boa — cansada do corpo, não da cabeça. Despede-se de Filomena.</p>
+  <p class="dialogue">— <em>Volte na próxima colheita.</em></p>
+  <p class="dialogue">— <em>Volto.</em> — diz Anna. E pensa que talvez seja verdade.</p>
+
+  <div class="caderno">
+    <span class="caderno-label">Do Caderno de Anna</span>
+    <p>Hoje apanhei azeitonas num olival com pessoas que não me conhecem. Um homem olhou para as minhas mãos e disse que tenho mãos de escritora porque não tenho calos. Fiquei a pensar nisso.</p>
+    <p>Ontem fiz pão com Dona Lurdes. O pão ficou bom. Aprendi que o fermento morre com água quente e que o pão sente quando não acreditas nele. O Alentejo é muito grande e muito quieto. É um silêncio cheio, não vazio.</p>
+  </div>
+</div>
+
+<!-- CAP 9 -->
+<div id="h-9" class="chap-panel">
+  <div class="parte-header"><div class="ph-label">Parte 3 — Douro Interior</div><div class="ph-sub">Acima do rio Douro, os socalcos sobem as encostas. As vinhas são antigas. As aldeias são pequenas e os habitantes são poucos. Mas há sempre alguém com tempo para conversar.</div></div>
+  <div class="chapter-tag">Capítulo 9</div><h2 class="chapter-title">A Aldeia Acima do Rio</h2>
+  <p class="story-p">Anna chega ao Douro por uma estrada que sobe e sobe e não para. Lá em baixo, o rio é largo e verde-azul. As encostas têm <span class="gloss" onclick="toggleGloss('g-socalcos')">socalcos</span> com vinhas até onde os olhos chegam. É uma paisagem que parece pintada.</p>
+  <div id="g-socalcos" class="gloss-box"><span class="gloss-icon">💬</span><em>socalcos</em> — agricultural terraces cut into steep hillsides. In the Douro Valley, these were built over centuries to create flat surfaces for vines on slopes too steep to farm otherwise. The Douro's terraced landscape is a UNESCO World Heritage site. Each terrace wall is held by dry stone.</div>
+  <p class="story-p">A aldeia onde fica é tão pequena que não aparece em muitos mapas. Chama-se Vilarinho e tem talvez cinquenta habitantes. A casa tem uma varanda com vista para o rio. Anna coloca uma cadeira lá fora e fica sentada uma hora sem fazer nada. O sol está a descer. O rio muda de cor: verde, depois dourado, depois cor de cobre.</p>
+  <p class="story-p">À noite, ela vai ao único restaurante da aldeia. É mais uma sala de jantar do que um restaurante. Uma mulher jovem serve. O menu não existe — a mulher diz o que há.</p>
+  <p class="dialogue">— <em>Hoje temos sopa de feijão, <span class="gloss" onclick="toggleGloss('g-bacalhau')">bacalhau</span> com batatas a murro, e arroz-doce.</em></p>
+  <div id="g-bacalhau" class="gloss-box"><span class="gloss-icon">💬</span><em>bacalhau</em> — salt cod. The most important ingredient in Portuguese cooking. It is said there are 365 ways to prepare it — one for every day of the year. Bacalhau is not fresh fish; it is dried and salted, then rehydrated over 24–48 hours before cooking. The flavour is deep, savoury, and unlike anything else.</div>
+  <p class="dialogue">— <em>Quero tudo.</em> — diz Anna.</p>
+  <p class="dialogue">— <em>Tudo? Está com fome.</em></p>
+  <p class="dialogue">— <em>E curiosa.</em></p>
+  <p class="story-p">A sopa chega primeiro. É espessa e boa. Depois o bacalhau: lascas de peixe branco e salgado com <span class="gloss" onclick="toggleGloss('g-batatamurro')">batatas a murro</span> e muito azeite e alho. Anna come devagar porque quer perceber todos os sabores.</p>
+  <div id="g-batatamurro" class="gloss-box"><span class="gloss-icon">💬</span><em>batatas a murro</em> — "punched potatoes." Boiled in their skins until tender, then given a firm punch with the fist to crack them open, then roasted in the oven with olive oil and garlic. The crushed texture absorbs the oil differently than a cut potato would. The name is completely literal.</div>
+  <p class="dialogue">— <em>Como se fazem as batatas a murro?</em> — pergunta ela quando a mulher recolhe o prato.</p>
+  <p class="story-p">A mulher senta-se na cadeira vazia.</p>
+  <p class="dialogue">— <em>Cozem-se as batatas com a pele. Depois dá-se um murro em cada uma.</em> — Ela fecha o punho e faz o gesto. — <em>Assim. E depois vai ao forno com azeite e alho.</em></p>
+  <p class="dialogue">— <em>Um murro. Que nome engraçado.</em></p>
+  <p class="dialogue">— <em>É a receita.</em> — diz a mulher, como se não houvesse mais nada a explicar.</p>
+  <p class="story-p">O <span class="gloss" onclick="toggleGloss('g-arrozdoce')">arroz-doce</span> chega com canela em cima, desenhada em círculos. Anna come tudo.</p>
+  <div id="g-arrozdoce" class="gloss-box"><span class="gloss-icon">💬</span><em>arroz-doce</em> — sweet rice pudding, one of Portugal's most loved desserts. Made with short-grain rice, milk, sugar, egg yolks, and lemon zest, then dusted with cinnamon on top — often in decorative patterns. Every region, every family, every restaurant has its own version.</div>
+
+  <div class="frases">
+    <span class="frases-label">🍽️ No Restaurante — Frases Úteis</span>
+    <div class="frases-grid">
+      <span class="frase-pt">O que têm hoje?</span><span class="frase-en">What do you have today?</span>
+      <span class="frase-pt">O que recomenda?</span><span class="frase-en">What do you recommend?</span>
+      <span class="frase-pt">Como se faz este prato?</span><span class="frase-en">How is this dish made?</span>
+      <span class="frase-pt">Pode trazer mais pão?</span><span class="frase-en">Can you bring more bread?</span>
+      <span class="frase-pt">Está delicioso.</span><span class="frase-en">It's delicious.</span>
+      <span class="frase-pt">A conta, por favor.</span><span class="frase-en">The bill, please.</span>
+    </div>
+  </div>
+</div>
+
+<!-- CAP 10 -->
+<div id="h-10" class="chap-panel">
+  <div class="chapter-tag">Capítulo 10</div><h2 class="chapter-title">O Mercado de Folgosa</h2>
+  <p class="story-p">De manhã, a mulher do restaurante — que se chama Inês — diz a Anna que há um mercado pequeno na aldeia de Folgosa, a quinze minutos de carro.</p>
+  <p class="dialogue">— <em>Vale a pena ir cedo. Antes das dez, o melhor já está vendido.</em></p>
+  <p class="story-p">Anna vai às oito e meia. O mercado é numa praça em frente a uma igreja. Há talvez vinte bancas. Vende-se fruta, legumes, mel, queijo, vinho a granel, plantas, e algumas coisas velhas: uma chaleira, um rádio de plástico laranja, pratos com flores azuis.</p>
+  <p class="story-p">Anna compra figos porque são gordos e perfeitos. Compra também uma pequena jarra de barro com uma rachadura que está colada.</p>
+  <p class="dialogue">— <em>Não está partida?</em></p>
+  <p class="dialogue">— <em>Está colada. Ainda serve. As coisas coladas são mais interessantes do que as perfeitas.</em></p>
+  <p class="story-p">Anna paga dois euros pela jarra. É a melhor compra que faz em Portugal. Numa banca de fim, há um senhor muito velho com garrafas de vinho sem rótulo.</p>
+  <p class="dialogue">— <em>É vinho daqui?</em></p>
+  <p class="dialogue">— <em>Da minha <span class="gloss" onclick="toggleGloss('g-quinta')">quinta</span>. Da encosta ali.</em></p>
+  <div id="g-quinta" class="gloss-box"><span class="gloss-icon">💬</span><em>quinta</em> — a rural estate or farm, often with vineyards, olive groves, or livestock. In the Douro, quintas are usually wine-producing properties, some small and family-run, some large and well-known. The word also appears in place names: Quinta da Regaleira, Quinta do Crasto.</div>
+  <p class="dialogue">— <em>Posso provar?</em></p>
+  <p class="story-p">Ele tira uma chávena pequena e enche. O vinho é tinto, escuro, e sabe a fruta e a terra.</p>
+  <p class="dialogue">— <em>É muito bom.</em></p>
+  <p class="dialogue">— <em>É.</em> — ele concorda, sem falsa modéstia.</p>
+  <p class="story-p">Anna compra duas garrafas. Ele embrulha-as num jornal velho. Quando Anna vai embora, ele diz:</p>
+  <p class="dialogue">— <em>Se vier à tarde, pode ver a adega.</em></p>
+  <p class="dialogue">— <em>Venho.</em> — diz Anna. E vem.</p>
+
+  <div class="frases">
+    <span class="frases-label">🍷 A Provar Vinho — Frases Úteis</span>
+    <div class="frases-grid">
+      <span class="frase-pt">Posso provar?</span><span class="frase-en">May I taste it?</span>
+      <span class="frase-pt">É daqui?</span><span class="frase-en">Is it from around here?</span>
+      <span class="frase-pt">De que uvas é feito?</span><span class="frase-en">What grapes is it made from?</span>
+      <span class="frase-pt">Há quanto tempo está na barrica?</span><span class="frase-en">How long has it been in the barrel?</span>
+      <span class="frase-pt">Quanto custa a garrafa?</span><span class="frase-en">How much is the bottle?</span>
+      <span class="frase-pt">Levo duas garrafas.</span><span class="frase-en">I'll take two bottles.</span>
+    </div>
+  </div>
+</div>
+
+<!-- CAP 11 -->
+<div id="h-11" class="chap-panel">
+  <div class="chapter-tag">Capítulo 11</div><h2 class="chapter-title">A Adega</h2>
+  <p class="story-p">À tarde, o senhor do vinho — que se chama Ernesto — espera Anna à entrada da sua quinta. Tem oitenta e dois anos e caminha com uma bengala mas muito rápido.</p>
+  <p class="story-p">A <span class="gloss" onclick="toggleGloss('g-adega')">adega</span> fica debaixo da casa. É fresca e escura. Há barricas grandes encostadas às paredes e garrafas em prateleiras de madeira. O cheiro é a vinho e a madeira húmida e a qualquer coisa mais antiga que Anna não consegue descrever.</p>
+  <div id="g-adega" class="gloss-box"><span class="gloss-icon">💬</span><em>adega</em> — wine cellar. In Portugal, every wine-producing family has one. In old houses, the adega is always below ground — cool and dark year-round. The word also appears in the names of wine shops and small wine bars: <em>adega tipica</em>.</div>
+  <p class="story-p">Ernesto explica tudo com calma. As uvas são colhidas em setembro. Pisam as uvas — <em>ainda pisamos a pé, como antigamente</em> — num <span class="gloss" onclick="toggleGloss('g-lagar')">lagar</span> de pedra que tem talvez duzentos anos. O vinho descansa nas barricas durante um ano.</p>
+  <div id="g-lagar" class="gloss-box"><span class="gloss-icon">💬</span><em>lagar</em> — a stone trough used for treading grapes by foot. This ancient method is still practised in some Douro quintas, particularly for premium wines. The gentle pressure of human feet preserves the grape skins better than mechanical pressing. The treading is done in groups, often to music.</div>
+  <p class="dialogue">— <em>Um ano?</em></p>
+  <p class="dialogue">— <em>Mínimo. O vinho não tem pressa.</em></p>
+  <p class="story-p">Ele mostra-lhe uma barrica que está a fermentar. Anna inclina-se e ouve. Há um som muito baixo, como uma respiração.</p>
+  <p class="dialogue">— <em>Está vivo.</em> — diz ela.</p>
+  <p class="dialogue">— <em>Está.</em> — Ernesto parece satisfeito que ela percebe. — <em>Quando o vinho para de fazer barulho, está pronto.</em></p>
+  <p class="story-p">Ele abre uma garrafa velha — de 2009 — e serve dois copos. Sentam-se em caixotes de madeira. O vinho é diferente do da manhã. É mais suave, mais complexo.</p>
+  <p class="dialogue">— <em>A sua família faz vinho há muito tempo?</em></p>
+  <p class="dialogue">— <em>O meu avô começou. Depois o meu pai. Depois eu.</em> — Ernesto pausa. — <em>Mas os meus filhos estão em Lisboa. Não sei o que acontece depois de mim.</em></p>
+  <p class="story-p">Ele diz isto sem amargura. É só um facto, como o tempo. Anna fica na adega duas horas. Quando sai, o sol já está baixo e o rio lá em baixo está outra vez dourado. Ela tem uma garrafa do 2009 debaixo do braço que Ernesto insistiu em dar.</p>
+  <p class="dialogue">— <em>Para beber com boa companhia.</em> — disse ele.</p>
+  <p class="story-p">Anna ainda não sabe com quem vai beber. Mas guarda a garrafa com cuidado.</p>
+</div>
+
+<!-- CAP 12 -->
+<div id="h-12" class="chap-panel">
+  <div class="chapter-tag">Capítulo 12</div><h2 class="chapter-title">A Caminhada</h2>
+  <p class="story-p">No último dia no Douro, Anna levanta-se antes do sol. Inês deu-lhe indicações para um trilho que sobe acima da aldeia e chega a um <span class="gloss" onclick="toggleGloss('g-miradouro')">miradouro</span> que não aparece nos guias.</p>
+  <div id="g-miradouro" class="gloss-box"><span class="gloss-icon">💬</span><em>miradouro</em> — a viewpoint, a belvedere. Portugal is full of them — official ones with railings and signs, and unofficial ones known only to locals. The word comes from <em>mirar</em> (to gaze) + <em>douro</em> (golden). The best ones are never on the tourist maps.</div>
+  <p class="dialogue">— <em>Vai ver o rio de cima. É muito melhor do que as fotografias.</em> — disse Inês.</p>
+  <p class="story-p">O trilho começa no fim da rua principal — que também é a única rua. Anna caminha por entre as vinhas. A terra está húmida da noite. As folhas das videiras estão amarelas e vermelhas porque é outubro. O silêncio é quase total. Só os seus passos e alguns pássaros.</p>
+  <p class="story-p">A subida é íngreme durante os primeiros vinte minutos. Depois a encosta suaviza e o trilho corre paralelo ao rio lá em baixo. Anna para muitas vezes. Não porque está cansada — porque quer olhar.</p>
+  <p class="story-p">Ao fim de uma hora, chega ao miradouro. É só uma plataforma de pedra com uma grade de ferro enferrujada. Mas a vista: o rio faz uma curva grande ali em baixo, e os dois lados são cobertos de socalcos e vinhas até ao horizonte. Não há nenhum barco. Não há nenhum ruído de carro. O rio reflete o céu, que está cor de rosa e laranja.</p>
+  <p class="story-p">Anna senta-se na pedra e não faz nada por muito tempo. Depois tira o caderno e tenta escrever. Mas as palavras não chegam — nem em inglês, nem em português. Ela fecha o caderno. Às vezes, um lugar é grande demais para palavras.</p>
+  <p class="story-p">Na descida, ela encontra um homem mais velho com um cão. Trocam um <em>bom dia</em>.</p>
+  <p class="dialogue">— <em>Viu o miradouro?</em></p>
+  <p class="dialogue">— <em>Vi.</em></p>
+  <p class="dialogue">— <em>E então?</em></p>
+  <p class="dialogue">— <em>Não há palavras.</em></p>
+  <p class="dialogue">— <em>Pois.</em> — diz ele. — <em>É assim.</em></p>
+  <p class="story-p">E continuam cada um o seu caminho.</p>
+
+  <div class="caderno">
+    <span class="caderno-label">Do Caderno de Anna</span>
+    <p>Hoje subi um trilho sozinha antes do sol nascer. Cheguei a um miradouro que não aparece nos guias. O rio estava em baixo e o céu estava cor de rosa. Tentei escrever mas não consegui. Às vezes as palavras não chegam e isso está bem.</p>
+    <p>Ernesto deu-me uma garrafa de vinho do ano 2009. Disse para beber com boa companhia. Ainda não sei com quem. No mercado, comprei uma jarra partida e colada por dois euros. O senhor disse que as coisas coladas são mais interessantes do que as perfeitas. Penso que tem razão.</p>
+  </div>
+</div>
+
+<!-- CAP 13 -->
+<div id="h-13" class="chap-panel">
+  <div class="parte-header"><div class="ph-label">Parte 4 — Algarve Interior</div><div class="ph-sub">Longe da costa e dos turistas, o Algarve interior é uma serra de xisto e sobreiros. As aldeias são silenciosas. Alguns estão quase abandonados. Mas há sempre alguém que ficou.</div></div>
+  <div class="chapter-tag">Capítulo 13</div><h2 class="chapter-title">Cachopo</h2>
+  <p class="story-p">Anna desce para o sul por estradas que ninguém usa. O GPS perde o sinal duas vezes. Ela continua pela lógica e pela direção do sol.</p>
+  <p class="story-p">Cachopo aparece numa dobra da serra. É pequeno e quieto. As casas são de <span class="gloss" onclick="toggleGloss('g-xisto')">xisto</span> escuro com telhados de barro. Há flores nas janelas que ninguém abriu hoje. Há um gato em cada esquina.</p>
+  <div id="g-xisto" class="gloss-box"><span class="gloss-icon">💬</span><em>xisto</em> — schist or slate, the dark layered rock found throughout the interior Algarve and Alentejo. Houses built from it are instantly recognisable: dark grey walls that absorb heat, cool interiors, a quality of permanence. The landscape and the architecture are made of the same material.</div>
+  <p class="story-p">Anna estaciona e anda. A aldeia tem uma praça com um <span class="gloss" onclick="toggleGloss('g-coreto')">coreto</span> e um banco de pedra. Um senhor está no banco. Tem um chapéu, um casaco, e uma expressão que diz que está ali há horas.</p>
+  <div id="g-coreto" class="gloss-box"><span class="gloss-icon">💬</span><em>coreto</em> — a bandstand, the small octagonal or hexagonal covered structure found in the centre of most Portuguese village squares. They were built in the 19th and early 20th centuries for municipal band concerts. Most are no longer used for music, but they remain — a fixture of every <em>praça</em>.</div>
+  <p class="dialogue">— <em>Boa tarde.</em> — diz Anna.</p>
+  <p class="dialogue">— <em>Boa tarde. Está perdida?</em></p>
+  <p class="dialogue">— <em>Não. Vim ver Cachopo.</em></p>
+  <p class="dialogue">— <em>Porquê?</em></p>
+  <p class="dialogue">— <em>Porque não aparece nos guias.</em></p>
+  <p class="dialogue">— <em>Isso é verdade.</em> — Ele faz um gesto. — <em>Sente-se.</em></p>
+  <p class="story-p">Anna senta-se no banco. O senhor chama-se Adelino. Tem oitenta e seis anos e viveu sempre em Cachopo, exceto dois anos no exército, em Angola. Não gostou.</p>
+  <p class="dialogue">— <em>Prefiro as pedras daqui.</em></p>
+  <p class="story-p">A aldeia tinha duzentos habitantes quando ele era novo. Agora tem talvez vinte.</p>
+  <p class="dialogue">— <em>Os jovens foram todos. Para Faro, para Lisboa, para a Alemanha. Alguns para a França.</em></p>
+  <p class="dialogue">— <em>E os que ficaram?</em></p>
+  <p class="dialogue">— <em>Ficámos porque gostamos disto. Ou porque somos teimosos. Não sei bem qual dos dois.</em></p>
+  <p class="story-p">Anna ri. Eles ficam sentados no banco mais meia hora. Adelino aponta para coisas: a casa onde nasceu, a escola que fechou em 1987, a <span class="gloss" onclick="toggleGloss('g-fonte')">fonte</span> onde as mulheres lavavam a roupa. Anna ouve. O sol aquece as pedras.</p>
+  <div id="g-fonte" class="gloss-box"><span class="gloss-icon">💬</span><em>fonte</em> — a fountain or spring. In old villages, the communal fountain was the centre of daily life — water source, meeting place, laundry point. Women gathered there every morning. In many abandoned or near-abandoned villages, the fountain is still flowing, long after the people who built it are gone.</div>
+  <p class="dialogue">— <em>Sabe o que tem esta aldeia que as outras não têm?</em></p>
+  <p class="dialogue">— <em>O quê?</em></p>
+  <p class="dialogue">— <em>Silêncio a sério. Não o silêncio de quem parou de falar. O silêncio de sempre foi assim.</em></p>
+  <p class="story-p">Anna fica com esta frase na cabeça o resto do dia.</p>
+
+  <div class="frases">
+    <span class="frases-label">🗺️ A Conhecer uma Aldeia — Frases Úteis</span>
+    <div class="frases-grid">
+      <span class="frase-pt">Há muito tempo que vive aqui?</span><span class="frase-en">Have you lived here long?</span>
+      <span class="frase-pt">Como era a aldeia antes?</span><span class="frase-en">What was the village like before?</span>
+      <span class="frase-pt">O que mudou?</span><span class="frase-en">What has changed?</span>
+      <span class="frase-pt">Há algum sítio para comer?</span><span class="frase-en">Is there anywhere to eat?</span>
+      <span class="frase-pt">Vale a pena visitar?</span><span class="frase-en">Is it worth visiting?</span>
+      <span class="frase-pt">Obrigada pela conversa.</span><span class="frase-en">Thank you for the conversation.</span>
+    </div>
+  </div>
+</div>
+
+<!-- CAP 14 -->
+<div id="h-14" class="chap-panel">
+  <div class="chapter-tag">Capítulo 14</div><h2 class="chapter-title">A Serra e o Yoga</h2>
+  <p class="story-p">De manhã, Anna encontra um trilho que sobe pela serra acima de Cachopo. Não é marcado. Adelino desenhou-lhe o caminho num papel.</p>
+  <p class="story-p">A serra é diferente do Douro. Aqui não há vinhas. Há <span class="gloss" onclick="toggleGloss('g-sobreiro')">sobreiros</span> com a casca cortada — cor de tijolo, cor de terracota — e <span class="gloss" onclick="toggleGloss('g-urze')">urze</span> roxa e pedras de xisto que brilham quando o sol as toca. O ar cheira a resina e a ervas silvestres.</p>
+  <div id="g-sobreiro" class="gloss-box"><span class="gloss-icon">💬</span><em>sobreiro</em> — the cork oak, one of Portugal's most important trees. Its bark is harvested every nine years without harming the tree. After harvesting, the exposed wood is painted with a number marking the year. Portugal produces over half the world's cork. These trees can live for centuries.</div>
+  <div id="g-urze" class="gloss-box"><span class="gloss-icon">💬</span><em>urze</em> — heather. Covers the hillsides of the interior Algarve and Serra de Monchique in purple and pink, especially in late summer and autumn. Used traditionally to make brooms and to flavour honey. The <em>mel de urze</em> (heather honey) of this region is particularly prized.</div>
+  <p class="story-p">Anna caminha uma hora até chegar a uma plataforma plana de rocha sobre o vale. É o lugar perfeito. Ela coloca a mochila no chão, tira o tapete de yoga que trouxe enrolado na parte de fora, e fica ali.</p>
+  <p class="story-p">Faz yoga durante quarenta minutos. Não há ninguém. Só ela, o vento, e um <span class="gloss" onclick="toggleGloss('g-milhafre')">milhafre</span> que a observa de uma rocha a dez metros. O sol está quente nas costas. As posturas são mais fáceis aqui do que em qualquer estúdio. O chão de rocha é firme e honesto.</p>
+  <div id="g-milhafre" class="gloss-box"><span class="gloss-icon">💬</span><em>milhafre</em> — the red kite, a large raptor with a distinctive forked tail and reddish-brown plumage. Common in southern Portugal, where it soars on thermals above open hillsides. It rarely flaps its wings — it reads the air and rides it.</div>
+  <p class="story-p">No fim, deita-se de costas e olha para o céu. Não pensa em nada especial. O céu é azul. Passam nuvens brancas. O vento move a urze com um som suave.</p>
+  <p class="story-p">Depois de um tempo, senta-se. Come uma maçã e bebe água. Escreve três linhas no caderno: <em>O corpo sabe coisas que a cabeça não sabe. Quando estou aqui, o corpo está sossegado. Em Nova Iorque, o corpo está sempre à espera de qualquer coisa.</em></p>
+  <p class="story-p">Ela lê o que escreveu. Não apaga.</p>
+  <p class="story-p">Na descida, passa por dois sobreiros cujos troncos foram descascados recentemente. A madeira por baixo é cor de vermelho vivo, quase como pele. Anna toca com a mão. Está quente.</p>
+  <p class="story-p">Portugal tem muitas coisas que parecem estar vivas quando não se espera.</p>
+</div>
+
+<!-- CAP 15 -->
+<div id="h-15" class="chap-panel">
+  <div class="chapter-tag">Capítulo 15</div><h2 class="chapter-title">A Festa da Aldeia</h2>
+  <p class="story-p">Na última noite em Cachopo, há uma <span class="gloss" onclick="toggleGloss('g-festa')">festa</span>. Não é uma festa grande. É uma festa de aldeia: algumas mesas na praça, um grupo de música com guitarra e acordeão, e pessoas que se conhecem há a vida toda.</p>
+  <div id="g-festa" class="gloss-box"><span class="gloss-icon">💬</span><em>festa</em> — a village festival or celebration. Every Portuguese village has at least one a year, usually in honour of its patron saint. They involve food, music, dancing, and a general gathering of everyone — including people who have moved away and come back for the occasion. The mood is unhurried and inclusive.</div>
+  <p class="story-p">Adelino encontra Anna à entrada da praça.</p>
+  <p class="dialogue">— <em>Vem sentar <span class="gloss" onclick="toggleGloss('g-connosco')">connosco</span>.</em> — diz ele, como se fosse a coisa mais natural do mundo.</p>
+  <div id="g-connosco" class="gloss-box"><span class="gloss-icon">💬</span><em>connosco</em> — "with us." The prepositional form of <em>nós</em> (we/us) after the preposition <em>com</em> (with). In EP, <em>com</em> merges with personal pronouns: <em>comigo</em> (with me), <em>contigo</em> (with you), <em>consigo</em> (with him/her/you formal), <em>connosco</em> (with us), <em>convosco</em> (with you pl).</div>
+  <p class="story-p">A mesa de Adelino tem seis pessoas: a sua filha que veio de Tavira para o fim de semana, dois homens da sua idade, e uma mulher que se chama Ilda e que faz os doces. Ilda trouxe <span class="gloss" onclick="toggleGloss('g-folhados')">folhados</span> com doce de abóbora e bolos de mel.</p>
+  <div id="g-folhados" class="gloss-box"><span class="gloss-icon">💬</span><em>folhados</em> — puff pastry parcels, filled with sweet or savoury fillings. At village festas, they are usually homemade — flaky, golden, and filled with seasonal preserves. The pumpkin jam version (<em>doce de abóbora</em>) is particularly associated with autumn celebrations in the Algarve interior.</div>
+  <p class="dialogue">— <em>O mel é do meu irmão. As abóboras também.</em></p>
+  <p class="story-p">Anna prova um folhado. A massa é estaladiça e o doce de abóbora é suave com canela.</p>
+  <p class="dialogue">— <em>Como faz o doce de abóbora?</em></p>
+  <p class="story-p">Ilda explica com prazer: a abóbora cozida, o açúcar, a canela, e — <em>o segredo</em> — uma casca de limão que fica a cozinhar com tudo e se tira no fim.</p>
+  <p class="dialogue">— <em>É o que faz a diferença entre bom e muito bom.</em> — diz Ilda, muito séria.</p>
+  <p class="story-p">Anna escreve no guardanapo porque não tem o caderno. Ilda vê e ri.</p>
+  <p class="dialogue">— <em>Nunca vi ninguém escrever receitas num guardanapo.</em></p>
+  <p class="dialogue">— <em>Escrevo onde posso.</em> — diz Anna.</p>
+  <p class="story-p">O grupo de música toca <span class="gloss" onclick="toggleGloss('g-fado')">fados</span> e músicas mais antigas que Anna não conhece mas que as pessoas da mesa cantam em voz baixa, sem se aperceber. É assim que a música deve ser: tão familiar que sai sozinha.</p>
+  <div id="g-fado" class="gloss-box"><span class="gloss-icon">💬</span><em>fado</em> — Portugal's most distinctive musical genre, recognised by UNESCO as an Intangible Cultural Heritage. Characterised by <em>saudade</em> — a longing for something lost or distant. Traditionally performed by one singer, a Portuguese guitar, and a viola baixo. In villages, people sing it casually, half to themselves, as Adelino's table does here.</div>
+  <p class="dialogue">— <em>Ainda vem a Portugal?</em></p>
+  <p class="dialogue">— <em>Sempre.</em> — diz ela.</p>
+  <p class="dialogue">— <em>Então volte a Cachopo. Traz mais vida.</em></p>
+  <p class="story-p">Anna não sabe se ele fala dela ou se é uma forma de dizer que qualquer visitante traz vida a uma aldeia que está a ficar pequena. Talvez as duas coisas.</p>
+
+  <div class="frases">
+    <span class="frases-label">🎶 Na Festa — Frases Úteis</span>
+    <div class="frases-grid">
+      <span class="frase-pt">Posso sentar-me aqui?</span><span class="frase-en">Can I sit here?</span>
+      <span class="frase-pt">Que música é esta?</span><span class="frase-en">What music is this?</span>
+      <span class="frase-pt">É fado?</span><span class="frase-en">Is it fado?</span>
+      <span class="frase-pt">O que é este doce?</span><span class="frase-en">What is this sweet?</span>
+      <span class="frase-pt">Há muitos anos que fazem esta festa?</span><span class="frase-en">Have you been holding this festival for many years?</span>
+      <span class="frase-pt">Foi uma noite muito bonita.</span><span class="frase-en">It was a very beautiful evening.</span>
+    </div>
+  </div>
+</div>
+
+<!-- CAP 16 -->
+<div id="h-16" class="chap-panel">
+  <div class="chapter-tag">Capítulo 16</div><h2 class="chapter-title">A Partida</h2>
+  <p class="story-p">Anna acorda cedo. A aldeia está em silêncio. As mesas da festa já foram arrumadas. Na praça só ficou um copo esquecido numa cadeira.</p>
+  <p class="story-p">Ela faz a mochila devagar. Tira cada coisa e coloca com cuidado: a jarra partida e colada embrulhada numa t-shirt, o frasco de azeite de Conceição, os molhos de ervas de Mértola, a garrafa do 2009 de Ernesto no centro da mochila com roupa à volta. O guardanapo com a receita de Ilda, dobrado quatro vezes, vai para o bolso da frente.</p>
+  <p class="story-p">Antes de sair, escreve um bilhete para Adelino e mete-o pela fenda da sua porta: <em>Obrigada pelos bancos de pedra e pelas histórias. Volto.</em></p>
+  <p class="story-p">Conduz pelo sul até ao aeroporto de Faro. A estrada passa por sobreiros que fazem sombra na estrada. Passa por campos de laranjeiras. Passa por uma aldeia que tem uma <span class="gloss" onclick="toggleGloss('g-padaria')">padaria</span> com o cheiro a sair pela janela aberta e Anna pensa em parar mas não para. Às vezes há que continuar.</p>
+  <div id="g-padaria" class="gloss-box"><span class="gloss-icon">💬</span><em>padaria</em> — bakery. In Portugal, the village padaria is often the last business to close when a community shrinks. Bread is baked before dawn; the smell reaches the street. The smell of a padaria in the morning is one of those things that stays with you long after the trip is over.</div>
+  <p class="story-p">No aeroporto, ela senta-se com um café e abre o caderno pela última vez nesta viagem. Escreve:</p>
+  <p class="story-p"><em>Esta viagem foi diferente das outras. Não fui a museus grandes nem a restaurantes com estrelas. Fui a lugares onde as pessoas conhecem o nome de todas as árvores. Onde o pão tem história. Onde o silêncio não é vazio.</em></p>
+  <p class="story-p"><em>Aprendi palavras que não existem em inglês da mesma forma: <span class="gloss" onclick="toggleGloss('g-saudade')">saudade</span>, <span class="gloss" onclick="toggleGloss('g-pois2')">pois</span>, <span class="gloss" onclick="toggleGloss('g-desenrascanco')">desenrascanço</span>. Aprendi que as coisas coladas são mais interessantes do que as perfeitas. Aprendi que o vinho ouve quando está a fermentar. Aprendi que a couve tem de ser couve-galega.</em></p>
+  <div id="g-saudade" class="gloss-box"><span class="gloss-icon">💬</span><em>saudade</em> — untranslatable. A deep, bittersweet longing for something or someone that is absent, lost, or may never have existed. Not quite nostalgia, not quite grief. It is said to be the emotional core of the Portuguese character, the feeling that gave birth to fado. You feel it, or you don't.</div>
+  <div id="g-pois2" class="gloss-box"><span class="gloss-icon">💬</span><em>pois</em> — one of the most untranslatable words in EP. It acknowledges, agrees, sympathises, or simply says "I am here, I am listening." Tone does everything. Said flat: <em>yes, indeed</em>. Said warmly: <em>that's right</em>. Said slowly: <em>well, I suppose so</em>. Said twice: <em>yes yes, I understand</em>. No English equivalent exists.</div>
+  <div id="g-desenrascanco" class="gloss-box"><span class="gloss-icon">💬</span><em>desenrascanço</em> — the Portuguese art of improvising a solution from whatever is available, under pressure, without complaint. From <em>desenrascar</em> (to disentangle, to get out of a tight spot). It is considered a national quality — practical ingenuity dressed as common sense. The Portuguese regard it with quiet pride.</div>
+  <p class="story-p"><em>Portugal não é um lugar que se visita. É um lugar onde se volta.</em></p>
+  <p class="story-p">O avião parte às catorze horas. Anna adormece antes de descolar. Sonha com pedras, com rio, com o cheiro a pão numa cozinha antiga.</p>
+
+  <div class="caderno">
+    <span class="caderno-label">Do Caderno de Anna</span>
+    <p>Estou no aeroporto. A mochila está pesada de coisas boas: azeite, ervas, uma jarra partida, um guardanapo com uma receita. Não trouxe souvenirs de lojas. Trouxe coisas de pessoas.</p>
+    <p>Adelino disse que trago vida à aldeia. Eu acho que é o contrário — a aldeia trouxe vida a mim. Vou voltar. Não sei quando. Mas Portugal é sempre uma resposta, nunca uma pergunta.</p>
+  </div>
+
+  <div class="closing-box">
+    <span class="closing-label">Fim de Livro II</span>
+    <p>Anna volta a casa com uma mochila pesada e a cabeça cheia.</p>
+    <p>Portugal fica para trás mas não desaparece.</p>
+    <p class="closing-sub">Nunca desaparece.</p>
+  </div>
+</div>
+
+</div><!-- /main-historia -->
+
+<!-- ==================== VOCABULÁRIO ==================== -->
+<div id="main-vocabulario" class="main-section">
+<div id="v-1" class="chap-panel active"><div class="chap-header"><div class="ch-num">Capítulo 1</div><h3>A Chegada</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">a chegada</span><span class="vocab-en">the arrival</span></div><div class="vocab-item"><span class="vocab-pt">o avião aterra</span><span class="vocab-en">the plane lands</span></div><div class="vocab-item"><span class="vocab-pt">o carro alugado</span><span class="vocab-en">the rental car</span></div><div class="vocab-item"><span class="vocab-pt">a lápis</span><span class="vocab-en">in pencil</span></div><div class="vocab-item"><span class="vocab-pt">ao balcão</span><span class="vocab-en">at the counter</span></div><div class="vocab-item"><span class="vocab-pt">acenar</span><span class="vocab-en">to wave</span></div><div class="vocab-item"><span class="vocab-pt">o parque de estacionamento</span><span class="vocab-en">the car park</span></div><div class="vocab-item"><span class="vocab-pt">o banco de trás</span><span class="vocab-en">the back seat</span></div><div class="vocab-item"><span class="vocab-pt">as oliveiras</span><span class="vocab-en">the olive trees</span></div><div class="vocab-item"><span class="vocab-pt">de repente</span><span class="vocab-en">suddenly</span></div><div class="vocab-item"><span class="vocab-pt">curvar-se</span><span class="vocab-en">to bend / to stoop</span></div><div class="vocab-item"><span class="vocab-pt">o vaso</span><span class="vocab-en">the pot / the vase</span></div></div></div>
+<div id="v-2" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 2</div><h3>O Café da Aldeia</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">a galinha</span><span class="vocab-en">the hen</span></div><div class="vocab-item"><span class="vocab-pt">o galo</span><span class="vocab-en">the rooster</span></div><div class="vocab-item"><span class="vocab-pt">inesperado/a</span><span class="vocab-en">unexpected</span></div><div class="vocab-item"><span class="vocab-pt">estreito/a</span><span class="vocab-en">narrow</span></div><div class="vocab-item"><span class="vocab-pt">a tinta a descascar</span><span class="vocab-en">peeling paint</span></div><div class="vocab-item"><span class="vocab-pt">o bigode</span><span class="vocab-en">the moustache</span></div><div class="vocab-item"><span class="vocab-pt">colado/a</span><span class="vocab-en">stuck / glued</span></div><div class="vocab-item"><span class="vocab-pt">a chávena</span><span class="vocab-en">the cup</span></div><div class="vocab-item"><span class="vocab-pt">o pano</span><span class="vocab-en">the cloth</span></div><div class="vocab-item"><span class="vocab-pt">ao longe</span><span class="vocab-en">in the distance</span></div><div class="vocab-item"><span class="vocab-pt">sensato/a</span><span class="vocab-en">sensible / wise</span></div><div class="vocab-item"><span class="vocab-pt">não há nada para fazer</span><span class="vocab-en">there's nothing to do</span></div></div></div>
+<div id="v-3" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 3</div><h3>As Rochas e o Castelo</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">escorregadio/a</span><span class="vocab-en">slippery</span></div><div class="vocab-item"><span class="vocab-pt">o telhado</span><span class="vocab-en">the roof</span></div><div class="vocab-item"><span class="vocab-pt">o falcão</span><span class="vocab-en">the falcon</span></div><div class="vocab-item"><span class="vocab-pt">tricotar</span><span class="vocab-en">to knit</span></div><div class="vocab-item"><span class="vocab-pt">a lã</span><span class="vocab-en">the wool</span></div><div class="vocab-item"><span class="vocab-pt">indelicado/a</span><span class="vocab-en">rude / indelicate</span></div><div class="vocab-item"><span class="vocab-pt">a placa</span><span class="vocab-en">the sign / the plaque</span></div><div class="vocab-item"><span class="vocab-pt">o telemóvel</span><span class="vocab-en">the mobile phone</span></div><div class="vocab-item"><span class="vocab-pt">nascer</span><span class="vocab-en">to be born</span></div><div class="vocab-item"><span class="vocab-pt">desaparecer</span><span class="vocab-en">to disappear</span></div><div class="vocab-item"><span class="vocab-pt">suficiente</span><span class="vocab-en">enough / sufficient</span></div></div></div>
+<div id="v-4" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 4</div><h3>A Vizinha e a Sopa</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">a vizinha</span><span class="vocab-en">the neighbour (f)</span></div><div class="vocab-item"><span class="vocab-pt">tapado/a</span><span class="vocab-en">covered</span></div><div class="vocab-item"><span class="vocab-pt">o caldo verde</span><span class="vocab-en">green broth soup</span></div><div class="vocab-item"><span class="vocab-pt">a tigela</span><span class="vocab-en">the bowl</span></div><div class="vocab-item"><span class="vocab-pt">a rodela</span><span class="vocab-en">the slice / the round</span></div><div class="vocab-item"><span class="vocab-pt">o chouriço</span><span class="vocab-en">smoked sausage</span></div><div class="vocab-item"><span class="vocab-pt">a couve-galega</span><span class="vocab-en">Portuguese kale</span></div><div class="vocab-item"><span class="vocab-pt">o azeite</span><span class="vocab-en">olive oil</span></div><div class="vocab-item"><span class="vocab-pt">o alho</span><span class="vocab-en">garlic</span></div><div class="vocab-item"><span class="vocab-pt">cozer</span><span class="vocab-en">to boil / to cook</span></div><div class="vocab-item"><span class="vocab-pt">passar</span><span class="vocab-en">to blend / to pass through</span></div><div class="vocab-item"><span class="vocab-pt">o pão de centeio</span><span class="vocab-en">rye bread</span></div><div class="vocab-item"><span class="vocab-pt">o queijo da serra</span><span class="vocab-en">mountain cheese</span></div></div></div>
+<div id="v-5" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 5</div><h3>A Estrada para Mértola</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">torrado/a</span><span class="vocab-en">toasted</span></div><div class="vocab-item"><span class="vocab-pt">a hortelã</span><span class="vocab-en">mint</span></div><div class="vocab-item"><span class="vocab-pt">o olival</span><span class="vocab-en">the olive grove</span></div><div class="vocab-item"><span class="vocab-pt">plano/a</span><span class="vocab-en">flat</span></div><div class="vocab-item"><span class="vocab-pt">as migas</span><span class="vocab-en">bread-based Alentejo dish</span></div><div class="vocab-item"><span class="vocab-pt">a travessa de barro</span><span class="vocab-en">the clay dish</span></div><div class="vocab-item"><span class="vocab-pt">ensopado/a</span><span class="vocab-en">soaked</span></div><div class="vocab-item"><span class="vocab-pt">a bolota</span><span class="vocab-en">the acorn</span></div><div class="vocab-item"><span class="vocab-pt">o agricultor</span><span class="vocab-en">the farmer</span></div><div class="vocab-item"><span class="vocab-pt">pesado/a</span><span class="vocab-en">heavy</span></div><div class="vocab-item"><span class="vocab-pt">o estranho</span><span class="vocab-en">the stranger</span></div></div></div>
+<div id="v-6" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 6</div><h3>Mértola</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">a mesquita</span><span class="vocab-en">the mosque</span></div><div class="vocab-item"><span class="vocab-pt">as colunas</span><span class="vocab-en">the columns</span></div><div class="vocab-item"><span class="vocab-pt">os mouros</span><span class="vocab-en">the Moors</span></div><div class="vocab-item"><span class="vocab-pt">o cesto de palha</span><span class="vocab-en">the straw basket</span></div><div class="vocab-item"><span class="vocab-pt">o molho</span><span class="vocab-en">the bunch / the bundle</span></div><div class="vocab-item"><span class="vocab-pt">a alfazema</span><span class="vocab-en">lavender</span></div><div class="vocab-item"><span class="vocab-pt">o tomilho</span><span class="vocab-en">thyme</span></div><div class="vocab-item"><span class="vocab-pt">embrulhar</span><span class="vocab-en">to wrap</span></div><div class="vocab-item"><span class="vocab-pt">amarrar</span><span class="vocab-en">to tie</span></div><div class="vocab-item"><span class="vocab-pt">o fio</span><span class="vocab-en">the thread / the string</span></div><div class="vocab-item"><span class="vocab-pt">à beira do rio</span><span class="vocab-en">by the river</span></div><div class="vocab-item"><span class="vocab-pt">amarrado/a</span><span class="vocab-en">tied / moored</span></div></div></div>
+<div id="v-7" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 7</div><h3>A Casa de Dona Lurdes</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">o forno de lenha</span><span class="vocab-en">the wood-fired oven</span></div><div class="vocab-item"><span class="vocab-pt">pendurado/a</span><span class="vocab-en">hanging</span></div><div class="vocab-item"><span class="vocab-pt">o teto</span><span class="vocab-en">the ceiling</span></div><div class="vocab-item"><span class="vocab-pt">a farinha</span><span class="vocab-en">the flour</span></div><div class="vocab-item"><span class="vocab-pt">espalhado/a</span><span class="vocab-en">spread out</span></div><div class="vocab-item"><span class="vocab-pt">o fermento</span><span class="vocab-en">the yeast</span></div><div class="vocab-item"><span class="vocab-pt">morno/a</span><span class="vocab-en">lukewarm</span></div><div class="vocab-item"><span class="vocab-pt">amassar</span><span class="vocab-en">to knead</span></div><div class="vocab-item"><span class="vocab-pt">a palma da mão</span><span class="vocab-en">the palm of the hand</span></div><div class="vocab-item"><span class="vocab-pt">a casca</span><span class="vocab-en">the crust / the bark</span></div><div class="vocab-item"><span class="vocab-pt">a fatia</span><span class="vocab-en">the slice</span></div><div class="vocab-item"><span class="vocab-pt">encher</span><span class="vocab-en">to fill</span></div></div></div>
+<div id="v-8" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 8</div><h3>O Olival</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">o olival</span><span class="vocab-en">the olive grove</span></div><div class="vocab-item"><span class="vocab-pt">a colheita</span><span class="vocab-en">the harvest</span></div><div class="vocab-item"><span class="vocab-pt">o tronco</span><span class="vocab-en">the trunk</span></div><div class="vocab-item"><span class="vocab-pt">torcido/a</span><span class="vocab-en">twisted</span></div><div class="vocab-item"><span class="vocab-pt">o pente</span><span class="vocab-en">the comb / the rake</span></div><div class="vocab-item"><span class="vocab-pt">as azeitonas</span><span class="vocab-en">the olives</span></div><div class="vocab-item"><span class="vocab-pt">o ramo</span><span class="vocab-en">the branch</span></div><div class="vocab-item"><span class="vocab-pt">a rede</span><span class="vocab-en">the net</span></div><div class="vocab-item"><span class="vocab-pt">curado/a</span><span class="vocab-en">cured</span></div><div class="vocab-item"><span class="vocab-pt">o cântaro de barro</span><span class="vocab-en">the clay jug</span></div><div class="vocab-item"><span class="vocab-pt">o calo</span><span class="vocab-en">the callus</span></div><div class="vocab-item"><span class="vocab-pt">o caixote</span><span class="vocab-en">the crate</span></div></div></div>
+<div id="v-9" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 9</div><h3>A Aldeia Acima do Rio</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">o socalco</span><span class="vocab-en">the terrace (agricultural)</span></div><div class="vocab-item"><span class="vocab-pt">a encosta</span><span class="vocab-en">the hillside</span></div><div class="vocab-item"><span class="vocab-pt">a vinha</span><span class="vocab-en">the vineyard</span></div><div class="vocab-item"><span class="vocab-pt">a paisagem</span><span class="vocab-en">the landscape</span></div><div class="vocab-item"><span class="vocab-pt">a varanda</span><span class="vocab-en">the balcony / veranda</span></div><div class="vocab-item"><span class="vocab-pt">dourado/a</span><span class="vocab-en">golden</span></div><div class="vocab-item"><span class="vocab-pt">o bacalhau</span><span class="vocab-en">salt cod</span></div><div class="vocab-item"><span class="vocab-pt">as batatas a murro</span><span class="vocab-en">"punched" potatoes</span></div><div class="vocab-item"><span class="vocab-pt">as lascas</span><span class="vocab-en">the flakes</span></div><div class="vocab-item"><span class="vocab-pt">grosseiramente</span><span class="vocab-en">roughly</span></div><div class="vocab-item"><span class="vocab-pt">o murro</span><span class="vocab-en">the punch</span></div><div class="vocab-item"><span class="vocab-pt">o punho</span><span class="vocab-en">the fist</span></div><div class="vocab-item"><span class="vocab-pt">a canela</span><span class="vocab-en">cinnamon</span></div></div></div>
+<div id="v-10" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 10</div><h3>O Mercado de Folgosa</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">valer a pena</span><span class="vocab-en">to be worth it</span></div><div class="vocab-item"><span class="vocab-pt">a granel</span><span class="vocab-en">in bulk / loose</span></div><div class="vocab-item"><span class="vocab-pt">a chaleira</span><span class="vocab-en">the kettle</span></div><div class="vocab-item"><span class="vocab-pt">a jarra</span><span class="vocab-en">the jug / the pitcher</span></div><div class="vocab-item"><span class="vocab-pt">a rachadura</span><span class="vocab-en">the crack</span></div><div class="vocab-item"><span class="vocab-pt">colado/a</span><span class="vocab-en">glued / mended</span></div><div class="vocab-item"><span class="vocab-pt">o rótulo</span><span class="vocab-en">the label</span></div><div class="vocab-item"><span class="vocab-pt">a quinta</span><span class="vocab-en">the farm / the estate</span></div><div class="vocab-item"><span class="vocab-pt">a adega</span><span class="vocab-en">the wine cellar</span></div><div class="vocab-item"><span class="vocab-pt">tinto/a</span><span class="vocab-en">red (wine)</span></div><div class="vocab-item"><span class="vocab-pt">a falsa modéstia</span><span class="vocab-en">false modesty</span></div><div class="vocab-item"><span class="vocab-pt">vagamente</span><span class="vocab-en">vaguely</span></div></div></div>
+<div id="v-11" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 11</div><h3>A Adega</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">a bengala</span><span class="vocab-en">the walking stick</span></div><div class="vocab-item"><span class="vocab-pt">a barrica</span><span class="vocab-en">the barrel</span></div><div class="vocab-item"><span class="vocab-pt">a prateleira</span><span class="vocab-en">the shelf</span></div><div class="vocab-item"><span class="vocab-pt">húmido/a</span><span class="vocab-en">damp / humid</span></div><div class="vocab-item"><span class="vocab-pt">as uvas</span><span class="vocab-en">the grapes</span></div><div class="vocab-item"><span class="vocab-pt">pisar</span><span class="vocab-en">to tread / to crush underfoot</span></div><div class="vocab-item"><span class="vocab-pt">o lagar</span><span class="vocab-en">the wine press / trough</span></div><div class="vocab-item"><span class="vocab-pt">fermentar</span><span class="vocab-en">to ferment</span></div><div class="vocab-item"><span class="vocab-pt">inclinar-se</span><span class="vocab-en">to lean / to bend over</span></div><div class="vocab-item"><span class="vocab-pt">a respiração</span><span class="vocab-en">the breathing</span></div><div class="vocab-item"><span class="vocab-pt">a amargura</span><span class="vocab-en">bitterness</span></div><div class="vocab-item"><span class="vocab-pt">a companhia</span><span class="vocab-en">company / companionship</span></div></div></div>
+<div id="v-12" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 12</div><h3>A Caminhada</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">o trilho</span><span class="vocab-en">the trail / the path</span></div><div class="vocab-item"><span class="vocab-pt">o miradouro</span><span class="vocab-en">the viewpoint</span></div><div class="vocab-item"><span class="vocab-pt">o guia</span><span class="vocab-en">the guidebook</span></div><div class="vocab-item"><span class="vocab-pt">a videira</span><span class="vocab-en">the grapevine</span></div><div class="vocab-item"><span class="vocab-pt">íngreme</span><span class="vocab-en">steep</span></div><div class="vocab-item"><span class="vocab-pt">suavizar</span><span class="vocab-en">to soften / to level out</span></div><div class="vocab-item"><span class="vocab-pt">paralelo/a</span><span class="vocab-en">parallel</span></div><div class="vocab-item"><span class="vocab-pt">enferrujado/a</span><span class="vocab-en">rusty</span></div><div class="vocab-item"><span class="vocab-pt">a curva</span><span class="vocab-en">the bend / the curve</span></div><div class="vocab-item"><span class="vocab-pt">o horizonte</span><span class="vocab-en">the horizon</span></div><div class="vocab-item"><span class="vocab-pt">refletir</span><span class="vocab-en">to reflect</span></div><div class="vocab-item"><span class="vocab-pt">pois</span><span class="vocab-en">indeed / exactly (EP)</span></div></div></div>
+<div id="v-13" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 13</div><h3>Cachopo</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">a dobra da serra</span><span class="vocab-en">the fold of the mountain</span></div><div class="vocab-item"><span class="vocab-pt">o xisto</span><span class="vocab-en">slate / schist</span></div><div class="vocab-item"><span class="vocab-pt">o sobreiro</span><span class="vocab-en">the cork oak</span></div><div class="vocab-item"><span class="vocab-pt">o coreto</span><span class="vocab-en">the bandstand</span></div><div class="vocab-item"><span class="vocab-pt">ligeiramente</span><span class="vocab-en">slightly</span></div><div class="vocab-item"><span class="vocab-pt">o exército</span><span class="vocab-en">the army</span></div><div class="vocab-item"><span class="vocab-pt">teimoso/a</span><span class="vocab-en">stubborn</span></div><div class="vocab-item"><span class="vocab-pt">a fonte</span><span class="vocab-en">the fountain / the spring</span></div><div class="vocab-item"><span class="vocab-pt">aquecer</span><span class="vocab-en">to warm / to heat</span></div><div class="vocab-item"><span class="vocab-pt">a sério</span><span class="vocab-en">seriously / for real</span></div><div class="vocab-item"><span class="vocab-pt">sempre foi assim</span><span class="vocab-en">it was always like this</span></div></div></div>
+<div id="v-14" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 14</div><h3>A Serra e o Yoga</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">a casca</span><span class="vocab-en">the bark / the crust</span></div><div class="vocab-item"><span class="vocab-pt">o tijolo</span><span class="vocab-en">the brick</span></div><div class="vocab-item"><span class="vocab-pt">a urze</span><span class="vocab-en">the heather</span></div><div class="vocab-item"><span class="vocab-pt">silvestre</span><span class="vocab-en">wild</span></div><div class="vocab-item"><span class="vocab-pt">a resina</span><span class="vocab-en">the resin</span></div><div class="vocab-item"><span class="vocab-pt">o tapete de yoga</span><span class="vocab-en">the yoga mat</span></div><div class="vocab-item"><span class="vocab-pt">enrolado/a</span><span class="vocab-en">rolled up</span></div><div class="vocab-item"><span class="vocab-pt">o milhafre</span><span class="vocab-en">the red kite (bird)</span></div><div class="vocab-item"><span class="vocab-pt">a postura</span><span class="vocab-en">the pose / the posture</span></div><div class="vocab-item"><span class="vocab-pt">firme</span><span class="vocab-en">firm / steady</span></div><div class="vocab-item"><span class="vocab-pt">sossegado/a</span><span class="vocab-en">calm / settled</span></div><div class="vocab-item"><span class="vocab-pt">descascado/a</span><span class="vocab-en">peeled / stripped of bark</span></div></div></div>
+<div id="v-15" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 15</div><h3>A Festa da Aldeia</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">o acordeão</span><span class="vocab-en">the accordion</span></div><div class="vocab-item"><span class="vocab-pt">connosco</span><span class="vocab-en">with us</span></div><div class="vocab-item"><span class="vocab-pt">o folhado</span><span class="vocab-en">the pastry / the puff pastry</span></div><div class="vocab-item"><span class="vocab-pt">o doce de abóbora</span><span class="vocab-en">pumpkin jam</span></div><div class="vocab-item"><span class="vocab-pt">o bolo de mel</span><span class="vocab-en">honey cake</span></div><div class="vocab-item"><span class="vocab-pt">estaladiço/a</span><span class="vocab-en">crispy / flaky</span></div><div class="vocab-item"><span class="vocab-pt">a casca de limão</span><span class="vocab-en">the lemon peel</span></div><div class="vocab-item"><span class="vocab-pt">o guardanapo</span><span class="vocab-en">the napkin</span></div><div class="vocab-item"><span class="vocab-pt">aperceber-se</span><span class="vocab-en">to notice / to realise</span></div><div class="vocab-item"><span class="vocab-pt">familiar</span><span class="vocab-en">familiar</span></div><div class="vocab-item"><span class="vocab-pt">trazer vida</span><span class="vocab-en">to bring life</span></div></div></div>
+<div id="v-16" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 16</div><h3>A Partida</h3></div><div class="vocab-grid"><div class="vocab-item"><span class="vocab-pt">a partida</span><span class="vocab-en">the departure</span></div><div class="vocab-item"><span class="vocab-pt">arrumado/a</span><span class="vocab-en">tidied away / put away</span></div><div class="vocab-item"><span class="vocab-pt">embrulhado/a</span><span class="vocab-en">wrapped</span></div><div class="vocab-item"><span class="vocab-pt">o bolso</span><span class="vocab-en">the pocket</span></div><div class="vocab-item"><span class="vocab-pt">o bilhete</span><span class="vocab-en">the note / the ticket</span></div><div class="vocab-item"><span class="vocab-pt">a fenda</span><span class="vocab-en">the slot / the crack under a door</span></div><div class="vocab-item"><span class="vocab-pt">a padaria</span><span class="vocab-en">the bakery</span></div><div class="vocab-item"><span class="vocab-pt">descolar</span><span class="vocab-en">to take off (plane)</span></div><div class="vocab-item"><span class="vocab-pt">o souvenir</span><span class="vocab-en">the souvenir</span></div><div class="vocab-item"><span class="vocab-pt">o desenrascanço</span><span class="vocab-en">the art of improvising a solution</span></div><div class="vocab-item"><span class="vocab-pt">a saudade</span><span class="vocab-en">longing / nostalgic longing</span></div></div></div>
+</div><!-- /main-vocabulario -->
+
+<!-- ==================== GRAMÁTICA ==================== -->
+<div id="main-gramatica" class="main-section">
+<div id="g-1" class="chap-panel active"><div class="chap-header"><div class="ch-num">Capítulo 1</div><h3>A Chegada</h3></div>
+<div class="grammar-card"><h4>Isso chega — "that's enough / that will do"</h4><div class="g-structure">isso + chega</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Chegar</em> literally means "to arrive," but <em>isso chega</em> means something is sufficient. Used to wrap up an exchange gracefully or to say you don't need more of something. Very common in informal conversation.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Ela diz obrigada e a senhora diz bom proveito e isso chega.</span><span class="en">She says thank you and the lady says enjoy — and that's enough.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Não precisas de explicar tudo. Isso chega.</span><span class="en">You don't need to explain everything. That's enough.</span></div><div class="g-example"><span class="pt">Um sorriso chega.</span><span class="en">A smile is enough.</span></div><div class="g-example"><span class="pt">Já percebi. Isso chega.</span><span class="en">I already understood. That'll do.</span></div></div></div>
+<div class="grammar-card"><h4>Cada um vai para o seu lado — "each one goes their own way"</h4><div class="g-structure">cada um + vai + para o seu lado</div><div class="g-block"><div class="g-block-label">When to use</div><p>A fixed expression used when two people part ways without drama or explanation. Learn it whole.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Os dois acenam e cada um vai para o seu lado.</span><span class="en">The two of them wave and each goes their own way.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Falámos um bocado e depois cada um foi para o seu lado.</span><span class="en">We chatted a bit and then each went their own way.</span></div><div class="g-example"><span class="pt">Sem mais palavras, cada um seguiu para o seu lado.</span><span class="en">Without more words, each one went their separate way.</span></div></div></div>
+</div>
+
+<div id="g-2" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 2</div><h3>O Café da Aldeia</h3></div>
+<div class="grammar-card"><h4>Café simples / cheio / duplo — ordering coffee in Portugal</h4><div class="g-structure">café simples &nbsp;/&nbsp; café cheio &nbsp;/&nbsp; café duplo</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Café simples</em> (also just <em>um café</em> or <em>uma bica</em> in Lisbon) is a small espresso. <em>Café cheio</em> is the same amount of coffee but with more water run through — weaker. <em>Café duplo</em> is a double shot. In Porto, espresso is called <em>uma cimbalino</em>.</p></div><div class="g-block"><div class="g-block-label">Quick reference</div><div class="g-example"><span class="pt">Um café / uma bica</span><span class="en">Standard espresso (Lisbon: bica; Porto: cimbalino)</span></div><div class="g-example"><span class="pt">Um café cheio</span><span class="en">Espresso with extra water — milder</span></div><div class="g-example"><span class="pt">Um galão</span><span class="en">Espresso with lots of hot milk (tall glass)</span></div><div class="g-example"><span class="pt">Uma meia de leite</span><span class="en">Half coffee, half hot milk — served in a glass</span></div></div></div>
+<div class="grammar-card"><h4>Ficar — to stay / to remain / to turn out</h4><div class="g-structure">ficar + [em lugar] &nbsp;/&nbsp; ficar + [adjective]</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Ficar</em> at A2 has two key uses: (1) staying in a place; (2) resulting in a state. It implies change or remaining, unlike <em>estar</em> which describes a current state without change.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Fica muito tempo?</span><span class="en">Are you staying long?</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Fico em Monsanto quatro dias.</span><span class="en">I'm staying in Monsanto for four days.</span></div><div class="g-example"><span class="pt">O pão ficou perfeito.</span><span class="en">The bread turned out perfect.</span></div><div class="g-example"><span class="pt">Ela ficou contente com a notícia.</span><span class="en">She was pleased with the news.</span></div></div></div>
+</div>
+
+<div id="g-3" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 3</div><h3>As Rochas e o Castelo</h3></div>
+<div class="grammar-card"><h4>Já + pretérito perfeito — past experience</h4><div class="g-structure">já + [verb in pretérito perfeito]</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Já</em> with the pretérito perfeito asks whether something has ever happened. It's the equivalent of "have you ever...?" The opposite is <em>ainda não</em> (not yet). Practice both together: <em>Já foi? — Ainda não.</em></p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Já veio aqui antes?</span><span class="en">Have you been here before?</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Já comeu caldo verde?</span><span class="en">Have you ever eaten caldo verde?</span></div><div class="g-example"><span class="pt">Já fui a Mértola duas vezes.</span><span class="en">I've been to Mértola twice already.</span></div><div class="g-example"><span class="pt">Ainda não fui — mas quero ir.</span><span class="en">I haven't been yet — but I want to go.</span></div></div></div>
+<div class="grammar-card"><h4>Nunca + verb — never</h4><div class="g-structure">nunca + [verb]</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Nunca</em> is placed before the verb and is a complete negation on its own. No additional negative word is needed. In emphatic speech <em>nunca</em> can also follow the verb, but the standard form is before it.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Eu nasci aqui. Nunca saí.</span><span class="en">I was born here. I never left.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Nunca fui à Madeira.</span><span class="en">I've never been to Madeira.</span></div><div class="g-example"><span class="pt">Nunca vi nada tão bonito.</span><span class="en">I've never seen anything so beautiful.</span></div></div></div>
+</div>
+
+<div id="g-4" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 4</div><h3>A Vizinha e a Sopa</h3></div>
+<div class="grammar-card"><h4>Ter de + infinitivo — obligation / necessity</h4><div class="g-structure">ter de + [infinitivo]</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Ter de</em> expresses necessity. Conjugates through <em>ter</em>: <em>tenho de, tens de, tem de, temos de, têm de</em>. More natural in everyday speech than <em>dever</em>.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Tem de ficar verde.</span><span class="en">It has to stay green.</span></div><div class="g-example"><span class="pt">A couve tem de ser couve-galega.</span><span class="en">The kale has to be couve-galega.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Tenho de ir agora.</span><span class="en">I have to go now.</span></div><div class="g-example"><span class="pt">Ela tem de voltar antes das dez.</span><span class="en">She has to be back before ten.</span></div></div></div>
+<div class="grammar-card"><h4>Pretérito perfeito — trazer, fazer, vir</h4><div class="g-structure">trouxe &nbsp;/&nbsp; fiz &nbsp;/&nbsp; vim</div><div class="g-block"><div class="g-block-label">When to use</div><p>Three of the most common verbs in daily conversation, all with irregular pretérito perfeito forms that must be memorised.</p></div><div class="g-block"><div class="g-block-label">Forms</div><div class="g-example"><span class="pt">trazer → trouxe, trouxeste, trouxe, trouxemos, trouxeram</span><span class="en">to bring</span></div><div class="g-example"><span class="pt">fazer → fiz, fizeste, fez, fizemos, fizeram</span><span class="en">to make / to do</span></div><div class="g-example"><span class="pt">vir → vim, vieste, veio, viemos, vieram</span><span class="en">to come</span></div></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Ela trouxe sopa.</span><span class="en">She brought soup.</span></div><div class="g-example"><span class="pt">Nunca fiz pão.</span><span class="en">I never made bread.</span></div></div></div>
+</div>
+
+<div id="g-5" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 5</div><h3>A Estrada para Mértola</h3></div>
+<div class="grammar-card"><h4>Estar a + infinitivo — ongoing action</h4><div class="g-structure">estar (conjugated) + a + [infinitivo]</div><div class="g-block"><div class="g-block-label">When to use</div><p>The standard way to say something is happening right now. Structure: <em>estar</em> conjugated + <em>a</em> + infinitive of the main verb.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Conceição já está a fechar a porta.</span><span class="en">Conceição is already closing the door.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Estou a aprender português.</span><span class="en">I am learning Portuguese.</span></div><div class="g-example"><span class="pt">O sol está a descer.</span><span class="en">The sun is going down.</span></div><div class="g-example"><span class="pt">Ele está a cozinhar o jantar.</span><span class="en">He is cooking dinner.</span></div></div></div>
+<div class="grammar-card"><h4>Apanhar — to pick up / to catch</h4><div class="g-structure">apanhar + [object / transport / illness]</div><div class="g-block"><div class="g-block-label">When to use</div><p>Highly versatile verb covering picking up objects, catching transport, catching illness, harvesting. Used constantly in daily speech.</p></div><div class="g-block"><div class="g-block-label">Common uses</div><div class="g-example"><span class="pt">Apanhar uma bolota do chão</span><span class="en">To pick up an acorn from the ground</span></div><div class="g-example"><span class="pt">Apanhar o autocarro / o comboio</span><span class="en">To catch the bus / the train</span></div><div class="g-example"><span class="pt">Apanhar uma constipação</span><span class="en">To catch a cold</span></div><div class="g-example"><span class="pt">Apanhar sol</span><span class="en">To catch some sun / to sunbathe</span></div></div></div>
+</div>
+
+<div id="g-6" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 6</div><h3>Mértola</h3></div>
+<div class="grammar-card"><h4>Ficar de pé — to stand upright</h4><div class="g-structure">ficar + de pé</div><div class="g-block"><div class="g-block-label">When to use</div><p>To remain standing, upright in one place. Distinct from <em>levantar-se</em> (to stand up, the action of rising). <em>Ficar de pé</em> is the state of being on one's feet.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Anna fica de pé no centro e olha para cima.</span><span class="en">Anna stands in the centre and looks up.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Ficámos de pé durante toda a viagem.</span><span class="en">We stood the whole journey.</span></div><div class="g-example"><span class="pt">Prefiro ficar de pé — a cadeira está molhada.</span><span class="en">I'd rather stand — the chair is wet.</span></div></div></div>
+<div class="grammar-card"><h4>Para quê serve — what is it used for</h4><div class="g-structure">para quê + serve + [noun]?</div><div class="g-block"><div class="g-block-label">When to use</div><p>Essential question for markets, kitchens, and pharmacies. <em>Para quê</em> asks about purpose. Note the difference: <em>por quê</em> asks for a reason; <em>para quê</em> asks for a purpose.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Para quê serve isto?</span><span class="en">What is this for?</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Para quê serve este botão?</span><span class="en">What is this button for?</span></div><div class="g-example"><span class="pt">Para quê serve o tomilho na cozinha?</span><span class="en">What is thyme used for in cooking?</span></div></div></div>
+</div>
+
+<div id="g-7" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 7</div><h3>A Casa de Dona Lurdes</h3></div>
+<div class="grammar-card"><h4>Matar — to kill (in cooking contexts)</h4><div class="g-structure">subject + mata + [ingredient]</div><div class="g-block"><div class="g-block-label">When to use</div><p>Used literally in cooking instructions to describe what destroys an ingredient's essential quality. Also appears in common expressions: <em>matar o tempo</em> (to kill time), <em>matar a fome</em> (to eat something / to kill hunger).</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">A água quente mata o fermento.</span><span class="en">Hot water kills the yeast.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">O sal a mais mata o sabor do peixe.</span><span class="en">Too much salt kills the flavour of the fish.</span></div><div class="g-example"><span class="pt">Vamos comer qualquer coisa — matar a fome.</span><span class="en">Let's eat something — kill the hunger.</span></div></div></div>
+<div class="grammar-card"><h4>O melhor... que já + pretérito perfeito</h4><div class="g-structure">o/a melhor [noun] que já + [pretérito perfeito]</div><div class="g-block"><div class="g-block-label">When to use</div><p>Superlative construction for the best (or worst) experience ever. The <em>já</em> creates the "ever" meaning — don't omit it.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">É o melhor pão que já comi na minha vida.</span><span class="en">It's the best bread I've ever eaten in my life.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">É o melhor vinho que já bebi.</span><span class="en">It's the best wine I've ever drunk.</span></div><div class="g-example"><span class="pt">É a mais bela aldeia que já vi.</span><span class="en">It's the most beautiful village I've ever seen.</span></div></div></div>
+</div>
+
+<div id="g-8" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 8</div><h3>O Olival</h3></div>
+<div class="grammar-card"><h4>Nota-se — "it shows" / "you can tell"</h4><div class="g-structure">nota-se + [that something is evident]</div><div class="g-block"><div class="g-block-label">When to use</div><p>The reflexive <em>notar-se</em> used impersonally to say something is obvious without specifying who notices it. Related expressions follow the same pattern: <em>vê-se</em> (one can see), <em>sente-se</em> (one can sense).</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Nota-se.</span><span class="en">It shows. / You can tell.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Nota-se que é a primeira vez.</span><span class="en">You can tell it's the first time.</span></div><div class="g-example"><span class="pt">Nota-se o sotaque americano.</span><span class="en">The American accent is noticeable.</span></div></div></div>
+<div class="grammar-card"><h4>Despedir-se de — to say goodbye to</h4><div class="g-structure">despedir-se + de + [person]</div><div class="g-block"><div class="g-block-label">When to use</div><p>Reflexive verb — pronoun must agree with subject. The preposition <em>de</em> is obligatory. Also used for leaving a job: <em>despediu-se da empresa</em>.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Anna despede-se de Filomena.</span><span class="en">Anna says goodbye to Filomena.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Despedi-me de todos antes de ir.</span><span class="en">I said goodbye to everyone before leaving.</span></div><div class="g-example"><span class="pt">Ela não se despediu — saiu sem dizer nada.</span><span class="en">She didn't say goodbye — she left without a word.</span></div></div></div>
+</div>
+
+<div id="g-9" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 9</div><h3>A Aldeia Acima do Rio</h3></div>
+<div class="grammar-card"><h4>Impersonal se in recipes — cozem-se, dá-se</h4><div class="g-structure">[verb] + se + [noun] &nbsp;&nbsp; (verb agrees with noun)</div><div class="g-block"><div class="g-block-label">When to use</div><p>Standard structure for recipe instructions. The reflexive <em>se</em> makes the action impersonal — no specific person is doing it. The verb agrees in number with the thing being acted on, not with a person.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Cozem-se as batatas com a pele.</span><span class="en">The potatoes are boiled with their skins.</span></div><div class="g-example"><span class="pt">Dá-se um murro em cada uma.</span><span class="en">You give each one a punch.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Junta-se o azeite no fim.</span><span class="en">The olive oil is added at the end.</span></div><div class="g-example"><span class="pt">Corta-se a couve muito fina.</span><span class="en">The kale is cut very thin.</span></div></div></div>
+<div class="grammar-card"><h4>Até onde os olhos chegam</h4><div class="g-structure">até onde + os olhos + chegam</div><div class="g-block"><div class="g-block-label">When to use</div><p>Fixed expression for a vast landscape stretching beyond the visible horizon. Literal: "until where the eyes arrive." Learn it whole.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">As encostas têm socalcos com vinhas até onde os olhos chegam.</span><span class="en">The hillsides have terraces with vines as far as the eye can see.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">O mar estendia-se até onde os olhos chegavam.</span><span class="en">The sea stretched as far as the eye could see.</span></div></div></div>
+</div>
+
+<div id="g-10" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 10</div><h3>O Mercado de Folgosa</h3></div>
+<div class="grammar-card"><h4>Vende-se / aluga-se — impersonal se in signs and markets</h4><div class="g-structure">vende-se / aluga-se / procura-se + [noun]</div><div class="g-block"><div class="g-block-label">When to use</div><p>The same impersonal <em>se</em> as in recipes, applied to commerce and public notices. The verb agrees with the thing being sold or offered.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Vende-se fruta, legumes, mel, queijo.</span><span class="en">Fruit, vegetables, honey, cheese are sold.</span></div></div><div class="g-block"><div class="g-block-label">Real-world examples</div><div class="g-example"><span class="pt">Vende-se apartamento T2.</span><span class="en">2-bedroom apartment for sale.</span></div><div class="g-example"><span class="pt">Aluga-se quarto.</span><span class="en">Room for rent.</span></div><div class="g-example"><span class="pt">Vendem-se casas. (plural noun → plural verb)</span><span class="en">Houses for sale.</span></div></div></div>
+<div class="grammar-card"><h4>Vale a pena + infinitivo</h4><div class="g-structure">vale a pena + [infinitivo]</div><div class="g-block"><div class="g-block-label">When to use</div><p>Impersonal expression of worthwhileness. Always followed by the infinitive. Negated as <em>não vale a pena</em>. Past tense: <em>valeu a pena</em>.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Vale a pena ir cedo.</span><span class="en">It's worth going early.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Vale a pena visitar Mértola.</span><span class="en">It's worth visiting Mértola.</span></div><div class="g-example"><span class="pt">Valeu a pena — foi incrível.</span><span class="en">It was worth it — it was incredible.</span></div></div></div>
+</div>
+
+<div id="g-11" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 11</div><h3>A Adega</h3></div>
+<div class="grammar-card"><h4>Há + time expression — duration up to the present</h4><div class="g-structure">verb (present tense) + há + [time period]</div><div class="g-block"><div class="g-block-label">When to use</div><p>An action that started in the past and is still happening now uses present tense + <em>há</em> + duration. Using the pretérito perfeito with <em>há</em> means something different — it places the action in the past: <em>estudei há seis meses</em> = "I studied six months ago."</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">A minha família faz vinho há muito tempo.</span><span class="en">My family has been making wine for a long time.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Estudo português há seis meses.</span><span class="en">I have been studying Portuguese for six months.</span></div><div class="g-example"><span class="pt">Conhecemo-nos há anos.</span><span class="en">We've known each other for years.</span></div></div></div>
+<div class="grammar-card"><h4>Depois de mim / depois de ti</h4><div class="g-structure">depois de + [prepositional pronoun]</div><div class="g-block"><div class="g-block-label">When to use</div><p>After any preposition in Portuguese, use prepositional pronouns, not subject pronouns: <em>mim, ti, ele/ela, nós, vocês, eles/elas</em>.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Não sei o que acontece depois de mim.</span><span class="en">I don't know what happens after me.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Depois de ti, vem o Rui.</span><span class="en">After you, it's Rui's turn.</span></div><div class="g-example"><span class="pt">O que fica depois de nós?</span><span class="en">What remains after us?</span></div></div></div>
+</div>
+
+<div id="g-12" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 12</div><h3>A Caminhada</h3></div>
+<div class="grammar-card"><h4>Pois — the most important EP response word</h4><div class="g-structure">pois &nbsp;/&nbsp; pois é &nbsp;/&nbsp; pois, pois</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Pois</em> is one of the highest-frequency words in spoken Portuguese — its meaning shifts entirely with tone and context. In a phone call, Portuguese people say it constantly while listening to signal "I'm here, I'm following."</p></div><div class="g-block"><div class="g-block-label">Main uses</div><div class="g-example"><span class="pt">Pois. (flat, low tone)</span><span class="en">Yes. / Right. / I see. / Indeed.</span></div><div class="g-example"><span class="pt">Pois é. (slightly warmer)</span><span class="en">That's right. / Exactly so.</span></div><div class="g-example"><span class="pt">Pois, pois. (repeated, sympathetic)</span><span class="en">Yes, yes... / I hear you...</span></div><div class="g-example"><span class="pt">Pois... (hesitating)</span><span class="en">Well... / Hmm... / I suppose...</span></div></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">— Não há palavras. — Pois. É assim.</span><span class="en">— There are no words. — Indeed. That's how it is.</span></div></div></div>
+<div class="grammar-card"><h4>Tentar + infinitivo / conseguir + infinitivo</h4><div class="g-structure">tentar + [inf.] &nbsp;&nbsp;&nbsp; conseguir + [inf.]</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Tentar</em> = to try (attempt made). <em>Conseguir</em> = to manage / succeed. <em>Não consegui</em> = I couldn't manage it — a specific failure, not just inability.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Tentei escrever mas não consegui.</span><span class="en">I tried to write but I couldn't manage it.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Tentei falar português — e consegui!</span><span class="en">I tried to speak Portuguese — and I managed it!</span></div><div class="g-example"><span class="pt">Ainda não consegui apanhar o comboio a tempo.</span><span class="en">I still haven't managed to catch the train on time.</span></div></div></div>
+</div>
+
+<div id="g-13" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 13</div><h3>Cachopo</h3></div>
+<div class="grammar-card"><h4>Ficar + adjective — result of a change</h4><div class="g-structure">ficar + [adjective / state]</div><div class="g-block"><div class="g-block-label">When to use</div><p>Expresses a resulting condition. <em>Estar</em> describes a current state with no change implied. <em>Ficar</em> describes the result of a change: <em>estou cansada</em> = I am tired; <em>fiquei cansada</em> = I got tired.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Anna fica com esta frase na cabeça.</span><span class="en">Anna is left with this phrase in her head.</span></div><div class="g-example"><span class="pt">O pão ficou bom.</span><span class="en">The bread turned out well.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Fiquei muito contente.</span><span class="en">I became very happy.</span></div><div class="g-example"><span class="pt">O tempo ficou bonito no fim.</span><span class="en">The weather turned out nice in the end.</span></div></div></div>
+<div class="grammar-card"><h4>Preferir — to prefer</h4><div class="g-structure">preferir + [noun] &nbsp;/&nbsp; preferir X a Y</div><div class="g-block"><div class="g-block-label">When to use</div><p>When followed by a noun, no preposition needed. When comparing two nouns: <em>preferir X a Y</em>. When comparing two actions: <em>preferir + infinitive + a + infinitive</em>.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Prefiro as pedras daqui.</span><span class="en">I prefer the stones from here.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Prefiro o vinho tinto ao branco.</span><span class="en">I prefer red wine to white.</span></div><div class="g-example"><span class="pt">Prefiro andar a apanhar táxi.</span><span class="en">I prefer to walk rather than take a taxi.</span></div></div></div>
+</div>
+
+<div id="g-14" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 14</div><h3>A Serra e o Yoga</h3></div>
+<div class="grammar-card"><h4>Estar à espera de — to be waiting for</h4><div class="g-structure">estar à espera de + [noun / infinitivo]</div><div class="g-block"><div class="g-block-label">When to use</div><p>Standard expression for waiting in Portuguese. Can describe waiting for a person, thing, or situation. Related: <em>sala de espera</em> (waiting room), <em>lista de espera</em> (waiting list).</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">O corpo está sempre à espera de qualquer coisa.</span><span class="en">The body is always waiting for something.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Estou à espera do comboio.</span><span class="en">I'm waiting for the train.</span></div><div class="g-example"><span class="pt">Ela está à espera de uma resposta.</span><span class="en">She's waiting for a reply.</span></div></div></div>
+<div class="grammar-card"><h4>Cujos / cujas — whose</h4><div class="g-structure">[noun A] + cujo/cuja/cujos/cujas + [noun B]</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Cujo</em> agrees in gender and number with the noun that follows it (what is possessed), not with the noun before it (the possessor). A senhora (f.) with casa (f.) → <em>cuja casa</em>. A senhor (m.) with casa (f.) is still → <em>cuja casa</em>.</p></div><div class="g-block"><div class="g-block-label">Agreement</div><div class="g-example"><span class="pt">cujo (m. sg.) / cuja (f. sg.) / cujos (m. pl.) / cujas (f. pl.)</span><span class="en">agrees with what is possessed</span></div></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Dois sobreiros cujos troncos foram descascados.</span><span class="en">Two cork oaks whose trunks were stripped.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Uma aldeia cujo nome não sei.</span><span class="en">A village whose name I don't know.</span></div><div class="g-example"><span class="pt">Pessoas cujas histórias ficam connosco.</span><span class="en">People whose stories stay with us.</span></div></div></div>
+</div>
+
+<div id="g-15" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 15</div><h3>A Festa da Aldeia</h3></div>
+<div class="grammar-card"><h4>Sem se aperceber — without noticing</h4><div class="g-structure">sem + [infinitivo] &nbsp;/&nbsp; sem + se + [reflexive inf.]</div><div class="g-block"><div class="g-block-label">When to use</div><p><em>Sem + infinitivo</em> = without doing something. With reflexive verbs, keep the reflexive pronoun. The pronoun agrees with the subject: <em>eu</em> → <em>sem me aperceber</em>; <em>ele/ela</em> → <em>sem se aperceber</em>.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">As pessoas cantam sem se aperceber.</span><span class="en">People sing without noticing.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Saiu sem se despedir.</span><span class="en">She left without saying goodbye.</span></div><div class="g-example"><span class="pt">Fiz o caminho sem me perder.</span><span class="en">I did the whole route without getting lost.</span></div></div></div>
+<div class="grammar-card"><h4>Vir a + place — to come to / to visit</h4><div class="g-structure">vir + a + [place] (visit) &nbsp;&nbsp; vir + para + [place] (move there)</div><div class="g-block"><div class="g-block-label">When to use</div><p>For visiting a place: <em>vir a</em>. For moving permanently: <em>vir para</em>. <em>Fui a Lisboa</em> = I went to Lisbon for a visit. <em>Fui para Lisboa</em> = I moved to Lisbon.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Ainda vem a Portugal?</span><span class="en">Do you still come to Portugal?</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Venho a Lisboa todos os anos.</span><span class="en">I come to Lisbon every year.</span></div><div class="g-example"><span class="pt">Vou para Lisboa amanhã — mudo de casa.</span><span class="en">I'm going to Lisbon tomorrow — I'm moving house.</span></div></div></div>
+</div>
+
+<div id="g-16" class="chap-panel"><div class="chap-header"><div class="ch-num">Capítulo 16</div><h3>A Partida</h3></div>
+<div class="grammar-card"><h4>Há que + infinitivo — one must</h4><div class="g-structure">há que + [infinitivo]</div><div class="g-block"><div class="g-block-label">When to use</div><p>Impersonal expression of necessity without a specific subject. Slightly more formal than <em>ter de</em>. Cannot be conjugated — always <em>há que</em>. Past tense: <em>havia que</em>.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Às vezes há que continuar.</span><span class="en">Sometimes one must keep going.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">Há que respeitar o silêncio deste lugar.</span><span class="en">One must respect the silence of this place.</span></div><div class="g-example"><span class="pt">Havia que fazer uma escolha.</span><span class="en">A choice had to be made.</span></div></div></div>
+<div class="grammar-card"><h4>É um lugar onde se volta</h4><div class="g-structure">é um lugar onde + se + [verb]</div><div class="g-block"><div class="g-block-label">When to use</div><p>The impersonal <em>se</em> with <em>onde</em> creates general statements about places — what one does in them, how they affect people. Common in reflective prose and descriptions of places.</p></div><div class="g-block"><div class="g-block-label">From the story</div><div class="g-example"><span class="pt">Portugal não é um lugar que se visita. É um lugar onde se volta.</span><span class="en">Portugal is not a place you visit. It's a place you return to.</span></div></div><div class="g-block"><div class="g-block-label">More examples</div><div class="g-example"><span class="pt">É um café onde se conversa horas.</span><span class="en">It's a café where you can talk for hours.</span></div><div class="g-example"><span class="pt">É um país onde se come muito bem.</span><span class="en">It's a country where one eats very well.</span></div></div></div>
+</div>
+
+</div><!-- /main-gramatica -->
+</div><!-- /content -->
+
+<script>
+function showMain(id, btn) {
+  document.querySelectorAll('.main-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('main-' + id).classList.add('active');
+  btn.classList.add('active');
+  ['historia','vocabulario','gramatica'].forEach(n => {
+    document.getElementById('nav-' + n).classList.toggle('visible', n === id);
+  });
+  if (id === 'historia') showChap('h', 0, document.querySelector('#nav-historia .chap-btn'));
+  if (id === 'vocabulario') showChap('v', 1, document.querySelector('#nav-vocabulario .chap-btn'));
+  if (id === 'gramatica') showChap('g', 1, document.querySelector('#nav-gramatica .chap-btn'));
+  window.scrollTo(0,0);
+}
+
+function showChap(prefix, n, btn) {
+  const section = prefix === 'h' ? 'historia' : prefix === 'v' ? 'vocabulario' : 'gramatica';
+  document.querySelectorAll('#main-' + section + ' .chap-panel').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById(prefix + '-' + n);
+  if (el) el.classList.add('active');
+  if (btn) {
+    const nav = btn.closest('.chap-nav');
+    nav.querySelectorAll('.chap-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  window.scrollTo(0,0);
+}
+
+function toggleGloss(id) {
+  const box = document.getElementById(id);
+  if (box) box.classList.toggle('open');
+}
+
+/* ── AUDIO ── */
+const BASE_URL = 'https://idacho57.github.io/Livro-II-O-rRegresso-a-Portugal/audio/';
+const titles = {1:'A Chegada',2:'O Café da Aldeia',3:'As Rochas e o Castelo',4:'A Vizinha e a Sopa',5:'A Estrada para Mértola',6:'Mértola',7:'A Casa de Dona Lurdes',8:'O Olival',9:'A Aldeia Acima do Rio',10:'O Mercado de Folgosa',11:'A Adega',12:'A Caminhada',13:'Cachopo',14:'A Serra e o Yoga',15:'A Festa da Aldeia',16:'A Partida'};
+let isPlaying = false;
+
+const chapterTexts = {
+  1: `Anna chega a Lisboa de manhã cedo. O avião aterra às sete e ela está cansada, mas contente. Não vai ficar em Lisboa. Lisboa é para outra vez. Desta vez, ela tem um carro alugado e um mapa com um círculo a lápis à volta de um nome: Monsanto.
+
+No aeroporto, ela bebe um café ao balcão. O café é forte e pequeno. Ela gosta assim. A senhora que serve não fala inglês e Anna não precisa. Ela diz obrigada e a senhora diz bom proveito e isso chega.
+
+Antes de sair, Anna vê Miguel. Ele está do outro lado do café, com uma câmara ao ombro e um copo de água na mão. Ele vê-a também. Os dois acenam. Ele sorri um pouco. Ela também. Depois cada um vai para o seu lado. Não há mais nada a dizer. Está bem assim.
+
+Anna pega na mochila e sai para o parque de estacionamento. O carro é pequeno e cinzento. Ela coloca a mochila no banco de trás, liga o GPS, e sai de Lisboa.
+
+A estrada é longa. Passa por campos de trigo, oliveiras, e aldeias com nomes que ela não conhece. O rádio toca músicas portuguesas. Anna não percebe todas as palavras mas gosta do som. Há uma hora em que não vê nenhum carro. Só estrada, sol, e pedras.
+
+Monsanto aparece de repente. Não é uma aldeia normal. As casas crescem entre rochas enormes, como se a pedra e as paredes fossem a mesma coisa. Anna para o carro e fica a olhar.
+
+Que sítio estranho e bonito, diz ela, em voz baixa, para ninguém.
+
+Encontra a casa que alugou online. A chave está debaixo de um vaso com uma planta seca. A porta é baixa e Anna tem de se curvar para entrar. Dentro, há uma cama, uma mesa, uma janela pequena com vista para as rochas. Não há televisão. Há silêncio.
+
+Ela coloca as coisas, deita-se na cama por cinco minutos, e adormece durante duas horas.`,
+
+  2: `De manhã, Anna acorda com o som de uma galinha. Não um galo, uma galinha. Ela ri um pouco porque é um som muito inesperado.
+
+Veste-se e sai. A aldeia está quieta. As ruas são estreitas e feitas de pedra irregular. Não há carros aqui dentro. Não cabem. Anna anda devagar e olha para tudo: uma porta azul com tinta a descascar, uma gata preta a dormir numa rocha quente, uma janela com flores de plástico cor-de-rosa.
+
+O único café da aldeia chama-se Café Central mas é muito pequeno para esse nome. Tem quatro mesas, um balcão de madeira, e um senhor de bigode que se chama Armindo.
+
+Bom dia. Um café, por favor, diz Anna.
+Simples ou cheio? pergunta Armindo.
+
+Anna não sabe a diferença. Qual é a diferença?
+
+Simples é só café. Cheio é café com um pouco de água quente. Ele faz um gesto com a mão. Mais suave.
+Cheio, então, diz Anna.
+
+O café chega numa chávena branca com um pacote de açúcar em cima. Anna não usa o açúcar mas gosta que ele esteja lá. Ela senta-se perto da janela. Há uma vista para as rochas e para um pedaço de campo verde ao longe.
+
+Armindo limpa o balcão com um pano e pergunta sem olhar para ela: É americana?
+Sou. Como sabe?
+A mochila. Os americanos têm sempre mochilas grandes.
+É verdade, diz Anna.
+Fica muito tempo?
+Quatro dias. Quero ver a aldeia. Andar. Descansar.
+
+Armindo acena com a cabeça como se isso fosse a coisa mais sensata que já ouviu.
+
+Então está no sítio certo, diz ele. Aqui não há nada para fazer. É perfeito.
+
+Anna bebe o café e pensa que ele tem razão.`,
+
+  3: `Depois do café, Anna sobe para o castelo. Não é uma subida fácil. As pedras da rua são redondas e escorregadias e Anna tem de andar com cuidado. Mas não se importa. Gosta de sentir os músculos das pernas a trabalhar.
+
+O castelo está no topo da aldeia. Não tem telhado. Só paredes altas de pedra escura. Mas a vista é extraordinária. Anna pode ver quilómetros de campo: verde, castanho, amarelo. Não há nenhuma cidade. Não há nenhum edifício alto. Só terra e céu.
+
+Ela senta-se numa pedra e tira o caderno da mochila. Não escreve logo. Primeiro só olha. Há um falcão a voar muito alto, a fazer círculos. O vento é suave mas frio.
+
+Depois de um tempo, uma mulher sobe também. Tem talvez setenta anos, um casaco preto, e um saco de plástico na mão. Ela não parece uma turista. Ela senta-se noutra pedra e começa a tricotar.
+
+Anna observa sem querer ser indelicada. A mulher tricota muito rápido, com lã vermelha, e não olha para os dedos. Olha para o campo.
+
+Já veio aqui antes?
+Não. É a primeira vez em Monsanto, diz Anna.
+E gosta?
+Muito. É muito especial.
+Eu nasci aqui. Nunca saí.
+
+Anna não sabe o que dizer. Então pergunta: E gosta de viver aqui?
+É a minha vida. Não sei outra.
+
+Ficam as duas em silêncio. O falcão desaparece. A mulher continua a tricotar. Anna abre o caderno mas não escreve nada. Às vezes o silêncio é suficiente.
+
+Na descida, Anna encontra uma placa pequena numa parede: Monsanto, Aldeia mais Portuguesa de Portugal, 1938. Ela fotografia a placa com o telemóvel. Depois fotografa uma rocha. Depois uma porta verde. Depois para de fotografar e só anda.`,
+
+  4: `Na última tarde em Monsanto, Anna está a arrumar a mochila quando ouve uma batida na porta. É uma mulher de meia-idade com um prato tapado com um pano.
+
+Sou a Conceição. Moro ao lado, diz ela. Trouxe sopa.
+Para mim?
+O Armindo disse que está sozinha. Faço sempre sopa às quintas. É caldo verde.
+
+Anna aceita o prato. Obrigada. É muito gentil.
+Entre, entre, diz Conceição, mas já está a entrar ela própria.
+
+Sentam-se à mesa pequena. Conceição tira o pano e há uma tigela de sopa verde escura com uma rodela de chouriço em cima. O cheiro é forte e bom.
+
+Sabe fazer? pergunta Conceição.
+Não. Nunca fiz.
+É fácil. Conceição começa a explicar com as mãos. Batata, couve, azeite, alho, chouriço. Coze tudo. Depois passa a batata. Depois junta a couve cortada muito fina. Não coze muito a couve. Tem de ficar verde.
+
+Anna come e ouve. A sopa é quente e simples e muito boa.
+
+A couve tem de ser couve-galega, diz Conceição, com seriedade. Não é qualquer couve.
+
+O meu marido também escrevia. Ele morreu há três anos. Escrevia poesia. Muito má. Ela ri. Mas escrevia.
+
+A poesia má também é importante, diz Anna.
+
+Conceição levanta-se e diz: Amanhã de manhã, antes de ir, venha tomar o pequeno-almoço comigo. Tenho pão de centeio e queijo da serra.
+Venho com certeza, diz Anna.
+
+Depois de Conceição sair, Anna escreve no caderno por uma hora.
+
+Caderno de Anna. Monsanto, quinta-feira à noite. Hoje uma senhora chamada Conceição trouxe sopa para mim. Não me conhece. Só sabe que estou sozinha. A sopa chama-se caldo verde. É verde e quente e tem chouriço. Aprendi a receita. A couve tem de ser couve-galega. Amanhã vou tomar o pequeno-almoço com ela. Não quero ir embora. Mas vou voltar a este lugar um dia.`,
+
+  5: `Anna parte de Monsanto de manhã. Come o pequeno-almoço com Conceição: pão de centeio torrado com manteiga, queijo da serra que é forte e cremoso, e um chá de hortelã. Conceição faz o chá com folhas frescas do jardim.
+
+Quando Anna sai, Conceição dá-lhe um frasco pequeno. Azeite da minha irmã. Tem um olival perto de Beja.
+
+Anna não quer aceitar mas Conceição já está a fechar a porta.
+
+A estrada para Mértola é longa e plana. O Alentejo é assim: grande e aberto. Não há montanhas. Há céu. Anna conduz com as janelas abertas. O ar cheira a terra seca e a ervas que ela não conhece.
+
+Ela para numa aldeia pequena para almoçar. A aldeia tem uma praça com uma árvore no centro e um café com mesas de plástico branco lá fora. Anna senta-se e pede o que o senhor da mesa ao lado tem.
+
+O que é isso? pergunta ela.
+Migas com carne de porco, diz o homem.
+É bom?
+É a melhor coisa do Alentejo, ele diz, muito sério.
+
+Anna pede migas. Chegam numa travessa de barro: pão velho ensopado em azeite com alho e coentros, e ao lado pedaços de carne de porco frita. É pesado e rico e muito bom.
+
+O homem apresenta-se. Chama-se Rui. É agricultor. Os porcos comem a bolota. Por isso a carne é boa.
+
+Bolota? Anna não conhece a palavra.
+
+Rui apanha uma coisa pequena do chão e mostra. Ah, diz Anna. Acorn. Em inglês diz-se acorn.
+Acorn, repete Rui. Nunca soube a palavra.
+
+Os dois riem. Anna pensa que esta é a melhor parte de viajar: aprender palavras novas com estranhos em praças com árvores.`,
+
+  6: `Mértola é uma surpresa. A aldeia fica em cima de uma rocha, sobre o rio Guadiana. As paredes são brancas. As ruas são muito estreitas. E no centro há uma igreja que foi uma mesquita. Anna lê isto numa placa e pára.
+
+Entra na igreja. É simples dentro. As paredes são brancas também e há colunas antigas. Anna fica de pé no centro e olha para cima. Pensa em todas as pessoas que estiveram neste sítio antes dela: mouros, cristãos, romanos mais antigos ainda. O lugar tem muita história e ela sente isso nos pés, de alguma forma.
+
+Do lado de fora, há um mercado pequeno numa praça. Não é um mercado de turistas. É um mercado de aldeia, com pessoas da zona a vender o que têm: mel, queijo, ervas secas, cestos de palha, algumas roupas.
+
+Para quê serve isto? pergunta Anna, a segurar um molho de erva cinzenta.
+Alfazema. Põe-se na roupa. Ou no banho. Ou só para cheirar.
+Cheira bem. E isto?
+Tomilho. Para cozinhar. Com carne, com peixe, com tudo.
+Menina, compra tudo e aprende em casa.
+
+Anna compra três molhos diferentes. A senhora embrulha-os num papel de jornal e amarra com um fio. É um gesto tão simples e tão bonito que Anna quer fotografar mas não quer ser indelicada. Então só guarda na memória.
+
+À tarde, ela senta-se à beira do rio. A água é castanha e lenta. Um barco velho está amarrado a uma pedra. Dois homens pescam em silêncio do outro lado. Anna tira os sapatos e deixa os pés na água. Está fria.
+
+Ela pensa que Portugal é sempre assim: coisas simples que são perfeitas.`,
+
+  7: `Na manhã seguinte, a dona da casa onde Anna fica, uma mulher chamada Lurdes, bate à porta do quarto às oito e diz: Hoje vou fazer pão. Quer ajudar?
+Quero.
+
+A cozinha de Dona Lurdes é grande e antiga. Há um forno de lenha numa parede. Há ervas penduradas no teto. Há uma mesa de madeira muito grossa no centro, com farinha já espalhada.
+
+Já fez pão?
+Uma vez. Não ficou muito bom.
+O primeiro pão nunca fica bom. O segundo também não. O terceiro começa a ficar.
+
+Ela ensina Anna passo a passo. A farinha, o sal, o fermento, a água morna. A água não pode estar quente. Mata o fermento.
+
+Depois amassar: com as palmas das mãos, para a frente e para trás, por vinte minutos. Anna amassa. As mãos ficam cansadas.
+
+Mais forte. O pão sente quando não acredita nele.
+
+Anna ri mas amassa mais forte.
+
+Enquanto o pão descansa, Dona Lurdes faz café e as duas sentam-se. Anna explica que vive em Nova Iorque mas não gosta muito da cidade. É demasiado rápido. Aqui é diferente.
+
+Aqui é devagar porque não há outra opção, diz Dona Lurdes, com humor seco.
+
+O pão fica no forno quarenta minutos. Quando sai, a casca é escura e o cheiro enche toda a casa. Dona Lurdes corta uma fatia e põe azeite em cima. Dá a Anna.
+
+Anna come e não diz nada por um momento.
+É o melhor pão que já comi na minha vida, diz ela, e é verdade.`,
+
+  8: `Na última manhã no Alentejo, Dona Lurdes acorda Anna cedo. A minha prima tem um olival a dez minutos. Hoje colhem. Quer vir?
+
+São sete da manhã. O sol ainda está baixo. Anna veste uma camisola grossa e vai.
+
+O olival é grande. As árvores são velhas, com troncos torcidos e cinzentos. Há seis pessoas a trabalhar. Usam pentes especiais de plástico para puxar as azeitonas dos ramos. As azeitonas caem em redes estendidas no chão.
+
+A prima de Dona Lurdes chama-se Filomena. É pequena e forte e trabalha mais rápido que todos. Ela dá a Anna um pente e mostra como fazer.
+
+Assim. Com cuidado. Não parte os ramos.
+
+Anna começa. É mais difícil do que parece. As azeitonas estão presas. Os braços cansam depressa.
+
+Nota-se, diz Filomena, sem maldade. É só um facto.
+
+Às dez, param para comer. Sentam-se no chão. Há pão, queijo, azeitonas curadas, e vinho num cântaro de barro que passa de mão em mão.
+
+Um homem mais velho olha para as mãos de Anna. Tem mãos de escritora.
+Como sabe?
+Não têm calos. Ele mostra as suas próprias mãos. São duras como madeira.
+
+À tarde, Anna ajuda a carregar os caixotes de azeitonas para um camião. Está cansada de uma maneira boa. Despede-se de Filomena.
+
+Volte na próxima colheita.
+Volto, diz Anna. E pensa que talvez seja verdade.
+
+Caderno de Anna. Alentejo, sexta-feira à noite. Hoje apanhei azeitonas num olival com pessoas que não me conhecem. Um homem olhou para as minhas mãos e disse que tenho mãos de escritora porque não tenho calos. Ontem fiz pão com Dona Lurdes. O pão ficou bom. O Alentejo é muito grande e muito quieto. É um silêncio cheio, não vazio.`,
+
+  9: `Anna chega ao Douro por uma estrada que sobe e sobe e não para. Lá em baixo, o rio é largo e verde-azul. As encostas têm socalcos com vinhas até onde os olhos chegam. É uma paisagem que parece pintada.
+
+A aldeia onde fica chama-se Vilarinho e tem talvez cinquenta habitantes. A casa tem uma varanda com vista para o rio. Anna coloca uma cadeira lá fora e fica sentada uma hora sem fazer nada. O sol está a descer. O rio muda de cor: verde, depois dourado, depois cor de cobre.
+
+À noite, ela vai ao único restaurante da aldeia. Uma mulher jovem serve. O menu não existe, a mulher diz o que há.
+
+Hoje temos sopa de feijão, bacalhau com batatas a murro, e arroz-doce.
+Quero tudo, diz Anna.
+Tudo? Está com fome.
+E curiosa.
+
+A sopa chega primeiro. Depois o bacalhau: lascas de peixe branco e salgado com batatas amassadas grosseiramente e muito azeite e alho. Anna come devagar porque quer perceber todos os sabores.
+
+Como se fazem as batatas a murro? pergunta ela.
+
+A mulher senta-se. Cozem-se as batatas com a pele. Depois dá-se um murro em cada uma. Ela fecha o punho e faz o gesto. E depois vai ao forno com azeite e alho.
+
+Um murro. Que nome engraçado.
+É a receita, diz a mulher, como se não houvesse mais nada a explicar.
+
+O arroz-doce chega com canela em cima, desenhada em círculos. Anna come tudo.`,
+
+  10: `De manhã, Inês diz a Anna que há um mercado pequeno na aldeia de Folgosa, a quinze minutos de carro. Vale a pena ir cedo. Antes das dez, o melhor já está vendido.
+
+Anna vai às oito e meia.
+
+O mercado é numa praça em frente a uma igreja. Há talvez vinte bancas. Vende-se fruta, legumes, mel, queijo, vinho a granel, plantas, e algumas coisas velhas.
+
+Anna compra figos porque são gordos e perfeitos. Compra também uma pequena jarra de barro com uma rachadura que está colada.
+
+Não está partida?
+Está colada. Ainda serve. As coisas coladas são mais interessantes do que as perfeitas.
+
+Anna paga dois euros pela jarra.
+
+Numa banca de fim, há um senhor muito velho com garrafas de vinho sem rótulo.
+É vinho daqui?
+Da minha quinta. Da encosta ali.
+Posso provar?
+
+Ele tira uma chávena pequena e enche. O vinho é tinto, escuro, e sabe a fruta e a terra.
+É muito bom.
+É, ele concorda, sem falsa modéstia.
+
+Anna compra duas garrafas. Quando vai embora, ele diz: Se vier à tarde, pode ver a adega.
+Venho, diz Anna. E vem.`,
+
+  11: `À tarde, o senhor do vinho, que se chama Ernesto, espera Anna à entrada da sua quinta. Tem oitenta e dois anos e caminha com uma bengala mas muito rápido.
+
+A adega fica debaixo da casa. É fresca e escura. Há barricas grandes encostadas às paredes e garrafas em prateleiras de madeira. O cheiro é a vinho e a madeira húmida e a qualquer coisa mais antiga que Anna não consegue descrever.
+
+Ernesto explica tudo com calma. As uvas são colhidas em setembro. Pisam as uvas ainda a pé, como antigamente, numa lagar de pedra que tem talvez duzentos anos. O vinho descansa nas barricas durante um ano.
+
+Um ano?
+Mínimo. O vinho não tem pressa.
+
+Ele mostra-lhe uma barrica que está a fermentar. Anna inclina-se e ouve. Há um som muito baixo, como uma respiração.
+Está vivo, diz ela.
+Está. Quando o vinho para de fazer barulho, está pronto.
+
+Ele abre uma garrafa de 2009 e serve dois copos. O vinho é mais suave, mais complexo.
+
+A sua família faz vinho há muito tempo?
+O meu avô começou. Depois o meu pai. Depois eu. Mas os meus filhos estão em Lisboa. Não sei o que acontece depois de mim.
+
+Ele diz isto sem amargura. É só um facto, como o tempo.
+
+Anna fica na adega duas horas. Ernesto dá-lhe uma garrafa do 2009. Para beber com boa companhia.
+
+Anna ainda não sabe com quem vai beber. Mas guarda a garrafa com cuidado.`,
+
+  12: `No último dia no Douro, Anna levanta-se antes do sol. Inês deu-lhe indicações para um trilho que sobe acima da aldeia e chega a um miradouro que não aparece nos guias.
+
+Vai ver o rio de cima. É muito melhor do que as fotografias.
+
+O trilho começa no fim da única rua. Anna caminha por entre as vinhas. A terra está húmida da noite. As folhas das videiras estão amarelas e vermelhas porque é outubro. O silêncio é quase total.
+
+A subida é íngreme durante os primeiros vinte minutos. Depois a encosta suaviza e o trilho corre paralelo ao rio lá em baixo. Anna para muitas vezes. Não porque está cansada, mas porque quer olhar.
+
+Ao fim de uma hora, chega ao miradouro. É só uma plataforma de pedra com uma grade de ferro enferrujada. Mas a vista: o rio faz uma curva grande ali em baixo, e os dois lados são cobertos de socalcos e vinhas até ao horizonte. O rio reflete o céu, que está cor de rosa e laranja.
+
+Anna senta-se na pedra e não faz nada por muito tempo. Depois tira o caderno e tenta escrever. Mas as palavras não chegam. Ela fecha o caderno. Às vezes, um lugar é grande demais para palavras.
+
+Na descida, ela encontra um homem mais velho com um cão. Viu o miradouro?
+Vi.
+E então?
+Não há palavras.
+Pois. É assim.
+
+E continuam cada um o seu caminho.
+
+Caderno de Anna. Douro, domingo de manhã. Hoje subi um trilho sozinha antes do sol nascer. Tentei escrever mas não consegui. Às vezes as palavras não chegam e isso está bem. No mercado, comprei uma jarra partida e colada por dois euros. As coisas coladas são mais interessantes do que as perfeitas. Penso que tem razão.`,
+
+  13: `Anna desce para o sul por estradas que ninguém usa. O GPS perde o sinal duas vezes. Ela continua pela lógica e pela direção do sol.
+
+Cachopo aparece numa dobra da serra. É pequeno e quieto. As casas são de xisto escuro com telhados de barro. Há flores nas janelas. Há um gato em cada esquina.
+
+Anna estaciona e anda. A aldeia tem uma praça com um coreto e um banco de pedra. Um senhor está no banco.
+
+Boa tarde.
+Boa tarde. Está perdida?
+Não. Vim ver Cachopo.
+Porquê?
+Porque não aparece nos guias.
+Isso é verdade. Sente-se.
+
+O senhor chama-se Adelino. Tem oitenta e seis anos e viveu sempre em Cachopo, exceto dois anos no exército, em Angola. Não gostou. Prefiro as pedras daqui.
+
+A aldeia tinha duzentos habitantes quando ele era novo. Agora tem talvez vinte.
+
+Os jovens foram todos. Para Faro, para Lisboa, para a Alemanha.
+E os que ficaram?
+Ficámos porque gostamos disto. Ou porque somos teimosos. Não sei bem qual dos dois.
+
+Anna ri. Eles ficam sentados no banco mais meia hora. Adelino aponta para coisas: a casa onde nasceu, a escola que fechou em 1987, a fonte onde as mulheres lavavam a roupa.
+
+Sabe o que tem esta aldeia que as outras não têm?
+O quê?
+Silêncio a sério. Não o silêncio de quem parou de falar. O silêncio de sempre foi assim.
+
+Anna fica com esta frase na cabeça o resto do dia.`,
+
+  14: `De manhã, Anna encontra um trilho que sobe pela serra acima de Cachopo. Não é marcado. Adelino desenhou-lhe o caminho num papel.
+
+A serra é diferente do Douro. Aqui não há vinhas. Há sobreiros com a casca cortada, cor de tijolo, cor de terracota, e urze roxa e pedras de xisto que brilham quando o sol as toca. O ar cheira a resina e a ervas silvestres.
+
+Anna caminha uma hora até chegar a uma plataforma plana de rocha sobre o vale. É o lugar perfeito. Ela coloca a mochila no chão, tira o tapete de yoga, e fica ali.
+
+Faz yoga durante quarenta minutos. Não há ninguém. Só ela, o vento, e um milhafre que a observa de uma rocha a dez metros. O sol está quente nas costas. As posturas são mais fáceis aqui do que em qualquer estúdio. O chão de rocha é firme e honesto.
+
+No fim, deita-se de costas e olha para o céu. Não pensa em nada especial. O céu é azul. Passam nuvens brancas. O vento move a urze com um som suave.
+
+Depois de um tempo, senta-se. Come uma maçã e bebe água. Escreve três linhas no caderno: O corpo sabe coisas que a cabeça não sabe. Quando estou aqui, o corpo está sossegado. Em Nova Iorque, o corpo está sempre à espera de qualquer coisa.
+
+Ela lê o que escreveu. Não apaga.
+
+Na descida, passa por dois sobreiros cujos troncos foram descascados recentemente. A madeira por baixo é cor de vermelho vivo, quase como pele. Anna toca com a mão. Está quente.
+
+Portugal tem muitas coisas que parecem estar vivas quando não se espera.`,
+
+  15: `Na última noite em Cachopo, há uma festa. Não é uma festa grande. É uma festa de aldeia: algumas mesas na praça, um grupo de música com guitarra e acordeão, e pessoas que se conhecem há a vida toda.
+
+Adelino encontra Anna à entrada da praça. Vem sentar connosco, diz ele, como se fosse a coisa mais natural do mundo.
+
+A mesa de Adelino tem seis pessoas. Uma mulher que se chama Ilda faz os doces. Ilda trouxe folhados com doce de abóbora e bolos de mel.
+
+O mel é do meu irmão. As abóboras também.
+
+Anna prova um folhado. A massa é estaladiça e o doce de abóbora é suave com canela. Como faz o doce de abóbora?
+
+Ilda explica: a abóbora cozida, o açúcar, a canela, e o segredo, uma casca de limão que fica a cozinhar com tudo e se tira no fim.
+
+É o que faz a diferença entre bom e muito bom, diz Ilda, muito séria.
+
+Anna escreve no guardanapo porque não tem o caderno. Ilda vê e ri. Nunca vi ninguém escrever receitas num guardanapo.
+Escrevo onde posso.
+
+O grupo de música toca fados e músicas mais antigas que Anna não conhece mas que as pessoas da mesa cantam em voz baixa, sem se aperceber. É assim que a música deve ser: tão familiar que sai sozinha.
+
+Ainda vem a Portugal?
+Sempre.
+Então volte a Cachopo. Traz mais vida.
+
+Anna não sabe se ele fala dela ou se é uma forma de dizer que qualquer visitante traz vida a uma aldeia que está a ficar pequena. Talvez as duas coisas.`,
+
+  16: `Anna acorda cedo. A aldeia está em silêncio. As mesas da festa já foram arrumadas. Na praça só ficou um copo esquecido numa cadeira.
+
+Ela faz a mochila devagar. Tira cada coisa e coloca com cuidado: a jarra partida e colada embrulhada numa t-shirt, o frasco de azeite de Conceição, os molhos de ervas de Mértola, a garrafa do 2009 de Ernesto no centro da mochila. O guardanapo com a receita de Ilda vai para o bolso da frente.
+
+Antes de sair, escreve um bilhete para Adelino e mete-o pela fenda da sua porta: Obrigada pelos bancos de pedra e pelas histórias. Volto.
+
+Conduz pelo sul até ao aeroporto de Faro. A estrada passa por sobreiros que fazem sombra na estrada. Passa por campos de laranjeiras. Passa por uma aldeia que tem uma padaria com o cheiro a sair pela janela aberta e Anna pensa em parar mas não para. Às vezes há que continuar.
+
+No aeroporto, ela senta-se com um café e abre o caderno pela última vez nesta viagem.
+
+Escreve: Esta viagem foi diferente das outras. Não fui a museus grandes nem a restaurantes com estrelas. Fui a lugares onde as pessoas conhecem o nome de todas as árvores. Onde o pão tem história. Onde o silêncio não é vazio.
+
+Aprendi palavras que não existem em inglês da mesma forma: saudade, pois, desenrascanço. Aprendi que as coisas coladas são mais interessantes do que as perfeitas. Aprendi que o vinho ouve quando está a fermentar. Aprendi que a couve tem de ser couve-galega.
+
+Portugal não é um lugar que se visita. É um lugar onde se volta.
+
+O avião parte às catorze horas. Anna adormece antes de descolar. Sonha com pedras, com rio, com o cheiro a pão numa cozinha antiga.
+
+Caderno de Anna. Aeroporto de Faro, segunda-feira de manhã. Estou no aeroporto. A mochila está pesada de coisas boas. Não trouxe souvenirs de lojas. Trouxe coisas de pessoas. Adelino disse que trago vida à aldeia. Eu acho que é o contrário. A aldeia trouxe vida a mim. Vou voltar. Não sei quando. Mas Portugal é sempre uma resposta, nunca uma pergunta.`
+};
+
+function setStatus(msg) {
+  document.getElementById('audio-status').textContent = msg;
+}
+
+function setPlaying(state) {
+  isPlaying = state;
+  const btn = document.getElementById('audio-play-btn');
+  btn.textContent = state ? '⏸ Pausar' : '▶ Ouvir';
+}
+
+async function handlePlay() {
+  const player = document.getElementById('audio-player');
+
+  // Resume if paused
+  if (!isPlaying && player.src && player.paused && player.readyState >= 2) {
+    await player.play();
+    setPlaying(true);
+    setStatus(document.getElementById('audio-status').textContent.replace('Pausado — ', 'A ouvir — '));
+    return;
+  }
+
+  // Pause if playing
+  if (isPlaying) {
+    player.pause();
+    setPlaying(false);
+    const current = document.getElementById('audio-status').textContent;
+    setStatus('Pausado — ' + current.replace('A ouvir — ', ''));
+    return;
+  }
+
+  const chapNum = parseInt(document.getElementById('audio-chap-select').value);
+  const padded = String(chapNum).padStart(2, '0');
+  const url = BASE_URL + 'cap' + padded + '.mp3';
+
+  const btn = document.getElementById('audio-play-btn');
+  btn.disabled = true;
+  setStatus('A carregar…');
+
+  player.src = url;
+  player.onended = () => {
+    setPlaying(false);
+    setStatus('Fim do capítulo.');
+    document.getElementById('audio-play-btn').textContent = '▶ Ouvir';
+  };
+  player.onerror = () => {
+    setPlaying(false);
+    setStatus('Ficheiro não encontrado — cap' + padded + '.mp3');
+    btn.disabled = false;
+  };
+  player.oncanplay = async () => {
+    try {
+      await player.play();
+      setPlaying(true);
+      setStatus('A ouvir — Cap. ' + chapNum + ': ' + titles[chapNum]);
+    } catch(e) {
+      setStatus('Erro ao reproduzir: ' + e.message);
+    } finally {
+      btn.disabled = false;
+    }
+  };
+}
+
+// Clear audio when chapter changes
+document.getElementById('audio-chap-select').addEventListener('change', function() {
+  const player = document.getElementById('audio-player');
+  player.pause();
+  player.src = '';
+  setPlaying(false);
+  setStatus('Pronto');
+  document.getElementById('audio-play-btn').textContent = '▶ Ouvir';
+});
+</script>
+</body>
+</html>
